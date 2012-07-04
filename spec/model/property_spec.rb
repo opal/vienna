@@ -15,4 +15,12 @@ describe "Model.property" do
     @model.foo = 'World'
     @model[:foo].should == 'World'
   end
+
+  it "should create getter/setters for each argument" do
+    @model.woosh = 42
+    @model.kapow = 3.142
+
+    @model[:woosh].should == 42
+    @model[:kapow].should == 3.142
+  end
 end

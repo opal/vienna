@@ -11,10 +11,11 @@ module Vienna
     #     end
     #
     # @param [String, Symbol] name the property name
-    # @param [Class] type the type for this property (optional?)
-    def self.property(name, type = String)
-      define_method(name) { @attributes[name] }
-      define_method("#{name}=") { |v| @attributes[name] = v }
+    def self.property(*names)
+      names.each do |name|
+        define_method(name) { @attributes[name] }
+        define_method("#{name}=") { |v| @attributes[name] = v }
+      end
     end
 
     def initialize(attrs = {})
