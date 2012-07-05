@@ -1,6 +1,47 @@
 module Vienna
+  # # Model
+  #
+  # Model is the base class to inherit from. Properties of the model
+  # should be defined upfront which will create the necessary getter
+  # and setter methods.
+  #
+  #   class MyModel < Vienna::Model
+  #     property :name, :age
+  #   end
+  #
+  #   user = MyModel.new
+  #   user.name = 'Adam'
+  #   user.age  = 42
+  #
+  # ## Property accessors
+  #
+  # Properties defined using `Model.property` will have the getter
+  # and setter methods created for you. These methods simple set the
+  # values on the internal `@attributes` ivar. `Model#[]` and
+  # `Model#[]=` can also be used to set variables directly.
+  #
+  # If you require some special encoding/decoding behaviour from
+  # incoming json or client side code, then you should override the
+  # created getter/setter methods.
+  #
+  #   class User < Vienna::Model
+  #     property :name
+  #
+  #     # ensure lowercase
+  #     def name=(name)
+  #       self[:name] = name.downcase
+  #     end
+  #
+  #     # always report as lowercase
+  #     def name
+  #       self[:name].downcase
+  #     end
+  #   end
+  #
+  # The `[]` and `[]=` methods are used to set the real values which
+  # will be serialized/deserialized into json for transport to the
+  # server.
   class Model
-
     # Define a property on this model subclass. A model can only
     # serialize and work with properties that have been defined
     # this way.
@@ -13,22 +54,135 @@ module Vienna
     # @param [String, Symbol] name the property name
     def self.property(*names)
       names.each do |name|
-        define_method(name) { @attributes[name] }
-        define_method("#{name}=") { |v| @attributes[name] = v }
+        define_method(name) { self[name] }
+        define_method("#{name}=") { |v| self[name] = v }
       end
     end
 
-    def initialize(attrs = {})
-      @attributes = {}
-      attrs.each { |attr, value| __send__ "#{attr}=", value }
+    # @private
+    def self.inherited(cls); cls.setup_subclass; end
+
+    # @private
+    # Sets up a Model subclass with some default variables.
+    def self.setup_subclass
+      @primary_key = :id
     end
 
+    # Used to either set or retrieve the primary key for instances of
+    # this Model subclass.
+    #
+    # The primary key can be retreieved by:
+    #
+    #   ModelSubclass.primary_key
+    #
+    # It is best to set a custom key as early as possible inside the
+    # class body definition:
+    #
+    #   class Book < Vienna::Model
+    #     primary_key :isbn
+    #
+    #     property :title
+    #     property :author
+    #   end
+    #
+    # @param [Symbol] key optional key
+    # @return [Symbol]
+    def self.primary_key(key=nil)
+      key ? @primary_key = key : @primary_key
+    end
+
+    # Create a new instance of this model. The initial attribute
+    # values should be passed into this method. It is not a good idea
+    # to override `initialize`, but if you do, make sure to call
+    # `super`.
+    #
+    #   Movie.new title: 'My awesome movie'
+    #
+    # @param [Hash<Symbol, Object>] attrs initial attributes for model
+    def initialize(attrs = {})
+      @attributes  = {}
+      @primary_key = self.class.primary_key 
+
+      self.attributes = attrs
+    end
+
+    # Directly access the current underlying attribute value for the
+    # given name. If the attribute has not been set, or has not been
+    # defined using `Model.property`, then `nil` will be returned.
+    #
+    #   movie[:title]         # => "My awesome movie"
+    #   movie.title = "omg"
+    #   movie[:title]         # => "omg"
+    #
+    # @param [Symbol, String] name attribute name to lookup
+    # @return [Object, nil] current attribute value or nil
     def [](name)
       @attributes[name]
     end
 
     def []=(name, value)
-      @attributes[name] = value
+      # old = @attributes[name]
+      # unless value == old
+        @attributes[name] = value
+        # trigger "change_#{name}", self, value
+      # end
+      value
+    end
+
+    # Set some attributes on this model instance. This will not clear
+    # any existing attributes, it will just set the ones in the given
+    # hash.
+    #
+    #   user = User.new name: 'Ben', height: 196
+    #   user.attributes = { name: 'Adam', age: 26 }
+    #
+    #   user.name     # => 'Adam'
+    #   user.height   # => 196
+    #
+    # @param [Hash<Symbol, Object>] attrs hash of attributes to set
+    def attributes=(attrs)
+      primary_key = @primary_key
+      attributes  = @attributes
+
+      attrs.each do |attr, value|
+        if attr == primary_key
+          attributes[primary_key] = value
+        elsif respond_to? "#{attr}="
+          __send__ "#{attr}=", value
+        else
+          # ...
+        end
+      end
+    end
+
+    def id
+      self[@primary_key]
+    end
+
+    def id=(id)
+      self[@primary_key] = id
+    end
+
+    # Returns whether or not this model is new. A model is new if it
+    # has not yet been assigned an id. Models are assigned id's when
+    # they are retrieved from the server (or saved and returned).
+    #
+    #   user = User.new name: 'adam'
+    #   user.new?   # => true
+    #
+    #   user2 = User.new name: 'ben', id: 2
+    #   user2.new?  # => false
+    #
+    # If the model has a custom primary key specified, then that
+    # attribute will be used in the check instead of the default `id`.
+    #
+    # @return [true, false]
+    def new?
+      @attributes[@primary_key].nil?
+    end
+
+    def to_json
+      @attributes.to_json
     end
   end
 end

@@ -5,3 +5,7 @@ class SimpleModelSpec < Vienna::Model
 
   property :woosh, :kapow
 end
+
+class SimpleModelSpec2 < Vienna::Model
+  primary_key :foo
+end

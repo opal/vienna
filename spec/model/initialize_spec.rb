@@ -22,4 +22,9 @@ describe "Model#initialize" do
     @c[:bar].should == "world"
     @c[:baz].should == 42
   end
+
+  it "should correctly setup @primary_key variable" do
+    SimpleModelSpec.new.instance_variable_get(:@primary_key).should == :id
+    SimpleModelSpec2.new.instance_variable_get(:@primary_key).should == :foo
+  end
 end
