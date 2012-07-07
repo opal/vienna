@@ -1,3 +1,5 @@
+require 'spec/spec_helper'
+
 module ModelPrimaryKeySpecs
   class ModelA < Vienna::Model
     # use default primary_key

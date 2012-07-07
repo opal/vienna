@@ -1,3 +1,5 @@
+require 'spec/spec_helper'
+
 class SimpleModelSpec < Vienna::Model
   property :foo
   property :bar

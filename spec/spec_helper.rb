@@ -1,3 +1,1 @@
-Document.ready? do
-  Spec::Runner.new.run
-end
+require 'vienna'
