@@ -62,4 +62,10 @@ describe "Observable#observe" do
     @obj.foo = 6284
     result.should == [[500, 200], [6284, 500]]
   end
+
+  it "should not create a setter method if one did not already exist" do
+    @obj.respond_to?(:first_name=).should be_false
+    @obj.observe(:first_name) { nil }
+    @obj.respond_to?(:first_name=).should be_false
+  end
 end

@@ -56,10 +56,12 @@ module Vienna
         old_value = get_attribute(name)
         handlers  = observers[name] = []
 
-        define_singleton_method("#{name}=") do |val|
-          super val
-          handlers.each { |h| h.call val, old_value }
-          old_value = val
+        if respond_to? "#{name}="
+          define_singleton_method("#{name}=") do |val|
+            super val
+            handlers.each { |h| h.call val, old_value }
+            old_value = val
+          end
         end
       end
 

@@ -1,5 +1,6 @@
 class ObservableGetAttributeSpec
-  attr_reader :foo
+  attr_accessor :foo, :bar
+  attr_reader :first_name
 
   def initialize(foo, bar, baz, buz)
     @foo = foo
