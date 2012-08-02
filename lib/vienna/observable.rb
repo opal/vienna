@@ -16,6 +16,12 @@ module Vienna
       end
     end
 
+    def set_attribute(name, val)
+      if respond_to? "#{name}="
+        __send__ "#{name}=", val
+      end
+    end
+
     # Start observing an attribute on this object. This will replace the
     # setter method for the given attribute with a singleton one on this
     # instance that calls super, to use the default implementation, and
@@ -35,15 +41,25 @@ module Vienna
     #   # => name is "adam"
     #   # => "name is tom"
     #
+    # The handler block gets passed two args; the new value of the
+    # attribute, and the old value:
+    #
+    #   obj.observe(:first_name) do |new_value, old_value|
+    #     puts "changed name from #{old_value} to #{new_value}"
+    #   end
+    #
     # @param [String, Symbol] name attribute name to start observing
     def observe(name, &handler)
       observers = (@__observers ||= {})
 
       unless handlers = observers[name]
-        handlers = observers[name] = []
+        old_value = get_attribute(name)
+        handlers  = observers[name] = []
+
         define_singleton_method("#{name}=") do |val|
           super val
-          handlers.each { |h| h.call val }
+          handlers.each { |h| h.call val, old_value }
+          old_value = val
         end
       end
 

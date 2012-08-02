@@ -170,11 +170,11 @@ module Vienna
       primary_key = @primary_key
       attributes  = @attributes
 
-      attrs.each do |attr, value|
-        if attr == primary_key
+      attrs.each do |name, value|
+        if name == primary_key
           attributes[primary_key] = @id = value
-        elsif respond_to? "#{attr}="
-          __send__ "#{attr}=", value
+        elsif respond_to? "#{name}="
+          __send__ "#{name}=", value
         else
           # ...
         end

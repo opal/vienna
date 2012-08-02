@@ -1,7 +1,3 @@
-class ObservableObserveSpec
-  attr_accessor :foo, :bar
-end
-
 describe "Observable#observe" do
   before do
     @obj = ObservableObserveSpec.new
@@ -52,5 +48,18 @@ describe "Observable#observe" do
 
     @obj.bar = 400
     out.should == [:foo, :bar, :bar]
+  end
+
+  it "should pass the new and old values of attribute to handlers" do
+    @obj.foo = 200
+    result   = []
+
+    @obj.observe(:foo) { |new, old| result << [new, old] }
+
+    @obj.foo = 500
+    result.should == [[500, 200]]
+
+    @obj.foo = 6284
+    result.should == [[500, 200], [6284, 500]]
   end
 end
