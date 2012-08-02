@@ -56,8 +56,8 @@ module Vienna
     # @param [String, Symbol] name the property name
     def self.property(*names)
       names.each do |name|
-        define_method(name) { self[name] }
-        define_method("#{name}=") { |v| self[name] = v }
+        define_method(name) { @attributes[name] }
+        define_method("#{name}=") { |val| @attributes[name] = val }
       end
     end
 
