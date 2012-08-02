@@ -1,4 +1,5 @@
 module Vienna
+
   # # Model
   #
   # Model is the base class to inherit from. Properties of the model
@@ -42,6 +43,7 @@ module Vienna
   # will be serialized/deserialized into json for transport to the
   # server.
   class Model
+
     # Define a property on this model subclass. A model can only
     # serialize and work with properties that have been defined
     # this way.

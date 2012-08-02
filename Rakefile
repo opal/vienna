@@ -5,5 +5,5 @@ require 'opal/rake_task'
 
 Opal::RakeTask.new do |t|
   t.name = 'vienna'
-  t.dependencies = %w(opal-spec opal-dom)
+  t.dependencies = %w(opal-spec)
 end
