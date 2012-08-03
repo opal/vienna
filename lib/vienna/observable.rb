@@ -50,22 +50,63 @@ module Vienna
     #
     # @param [String, Symbol] name attribute name to start observing
     def observe(name, &handler)
-      observers = (@observers ||= {})
+      if name.include? '.'
+        names = name.split '.'
+        base  = PathObserver.new names[0]
+        last  = base
 
-      unless handlers = observers[name]
-        old_value = get_attribute(name)
-        handlers  = observers[name] = []
+        names.drop(1).each { |name| last = last.next = PathObserver.new(name) }
 
-        if respond_to? "#{name}="
-          define_singleton_method("#{name}=") do |val|
-            super val
-            handlers.each { |h| h.call val, old_value }
-            old_value = val
+        base.object = self
+        last.handler = handler
+      else
+        observers = (@observers ||= {})
+
+        unless handlers = observers[name]
+          old_value = get_attribute(name)
+          handlers  = observers[name] = []
+
+          if respond_to? "#{name}="
+            define_singleton_method("#{name}=") do |val|
+              super val
+              handlers.each { |h| h.call val, old_value }
+              old_value = val
+            end
           end
         end
+
+        handlers << handler
+      end
+    end
+
+    class PathObserver
+      attr_accessor :next
+      attr_accessor :handler
+
+      # @param [String, Symbol] name the attribute name this part is
+      # observing
+      def initialize(name)
+        @name = name
       end
 
-      handlers << handler
+      # The object that this observer is observing changes
+      def object=(obj)
+        return if obj == @object
+
+        if @object = obj
+          @object.observe(@name) { value_changed }
+        end
+
+        value_changed
+      end
+
+      # The value of the attr `@name` on `@object` changed
+      def value_changed
+        value = @object.get_attribute @name
+
+        @next.object = value if @next
+        @handler.call value if @handler
+      end
     end
 
   end

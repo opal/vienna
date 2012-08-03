@@ -69,3 +69,29 @@ describe "Observable#observe" do
     @obj.respond_to?(:first_name=).should be_false
   end
 end
+
+describe "Observable#observe with a path" do
+  before do
+    @foo = ObservableObserveSpec.new
+    @bar = ObservableObserveSpec.new
+    @foo.bar = @bar
+    @bar.baz = 42
+  end
+
+  it "should create observer on receiver object and each intermediate object" do
+    @foo.observe('bar.baz') {}
+    @foo.observers[:bar].size.should == 1
+    @bar.observers[:baz].size.should == 1
+  end
+
+  it "should call the handler when last attr path changes" do
+    out = nil
+    @foo.observe('bar.baz') { |val| out = val }
+
+    @bar.baz = 42
+    out.should == 42
+
+    @bar.baz = 3.142
+    out.should == 3.142
+  end
+end
