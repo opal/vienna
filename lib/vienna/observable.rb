@@ -50,7 +50,7 @@ module Vienna
     #
     # @param [String, Symbol] name attribute name to start observing
     def observe(name, &handler)
-      observers = (@__observers ||= {})
+      observers = (@observers ||= {})
 
       unless handlers = observers[name]
         old_value = get_attribute(name)
