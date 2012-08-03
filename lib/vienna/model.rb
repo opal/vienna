@@ -195,16 +195,16 @@ module Vienna
     # they are retrieved from the server (or saved and returned).
     #
     #   user = User.new name: 'adam'
-    #   user.new?   # => true
+    #   user.new_record?   # => true
     #
     #   user2 = User.new name: 'ben', id: 2
-    #   user2.new?  # => false
+    #   user2.new_record?  # => false
     #
     # If the model has a custom primary key specified, then that
     # attribute will be used in the check instead of the default `id`.
     #
     # @return [true, false]
-    def new?
+    def new_record?
       @attributes[@primary_key].nil?
     end
 
