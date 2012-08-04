@@ -51,14 +51,8 @@ module Vienna
     # @param [String, Symbol] name attribute name to start observing
     def observe(name, &handler)
       if name.include? '.'
-        names = name.split '.'
-        base  = PathObserver.new names[0]
-        last  = base
-
-        names.drop(1).each { |name| last = last.next = PathObserver.new(name) }
-
+        base = PathObserver.new name, handler
         base.object = self
-        last.handler = handler
       else
         observers = (@observers ||= {})
 
@@ -79,14 +73,43 @@ module Vienna
       end
     end
 
+    # Used for observing a complex path.
+    #
+    # Setting up an observer such as:
+    #
+    #   base.observe('a.b.c') do
+    #     puts "observer called"
+    #   end
+    #
+    # Is the same as doing this manually:
+    #
+    #   o = PathObserver.new('a.b.c', proc { puts "observer called" })
+    #   o.object = base
+    #
+    # The initialize method examines the path, and if it is complex
+    # then it is split into the current attr to observe, and the
+    # remaining path. The `@next` path observer is the result of
+    # passing this remaining path to a new instance.
+    #
+    # If the path passed in to this instance is simple (i.e. a single
+    # attr name), then no `next` observer is registered, and that
+    # instance becomes the head of the chain as it is the one actually
+    # observing our desired value. Only the head observer calls the
+    # block passed into `new`.
     class PathObserver
-      attr_accessor :next
-      attr_accessor :handler
 
-      # @param [String, Symbol] name the attribute name this part is
+      # @param [String, Symbol] path the attribute path for this part
       # observing
-      def initialize(name)
-        @name = name
+      def initialize(path, handler = nil)
+        @handler = handler
+
+        if path.include? '.'
+          parts = path.partition '.'
+          @attr = parts[0]
+          @next = PathObserver.new(parts[2], handler)
+        else
+          @attr = path
+        end
       end
 
       # The object that this observer is observing changes
@@ -94,7 +117,7 @@ module Vienna
         return if obj == @object
 
         if @object = obj
-          @object.observe(@name) { value_changed }
+          @object.observe(@attr) { value_changed }
         end
 
         value_changed
@@ -102,7 +125,7 @@ module Vienna
 
       # The value of the attr `@name` on `@object` changed
       def value_changed
-        value = @object.get_attribute @name
+        value = @object.get_attribute @attr
 
         @next.object = value if @next
         @handler.call value if @handler
