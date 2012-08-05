@@ -68,6 +68,11 @@ describe "Observable#observe" do
     @obj.observe(:first_name) { nil }
     @obj.respond_to?(:first_name=).should be_false
   end
+
+  it "should return the passed in block" do
+    proc = proc {}
+    @obj.observe(:foo, &proc).should == proc
+  end
 end
 
 describe "Observable#observe with a path" do
@@ -93,5 +98,10 @@ describe "Observable#observe with a path" do
 
     @bar.baz = 3.142
     out.should == 3.142
+  end
+
+  it "should return the passed in block" do
+    proc = proc {}
+    @foo.observe('bar.baz', &proc).should == proc
   end
 end

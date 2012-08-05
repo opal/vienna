@@ -71,6 +71,30 @@ module Vienna
 
         handlers << handler
       end
+
+      handler
+    end
+
+    # Remove the handler for the given attribute `name`. If this object
+    # does not have the handler as an observer for the given name then
+    # nil is returned. (no error is raised).
+    #
+    #   object = Object.new
+    #   proc   = proc { puts "changed!" }
+    #
+    #   object.observe(:foo, &proc)
+    #   object.unobserve(:foo, proc)
+    #
+    # The handler should be passed in as a normal arg (not a block).
+    #
+    # @param [String, Symbol] name attribute name to remove observer for
+    # @param [Proc] handler the proc to remove as handler
+    def unobserve(name, handler)
+      return unless @observers
+
+      if handlers = @observers[name]
+        handlers.delete handler
+      end
     end
 
     # Used for observing a complex path.
