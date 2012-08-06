@@ -15,11 +15,17 @@ module Vienna
       @value  = nil
 
       source.observe(s_attr) do |new_val|
-        # if new_val !== @value, then we must set value on target
+        if new_val != @value
+          @value = new_val
+          target.set_attribute t_attr, @value
+        end
       end
 
       target.observe(t_attr) do |new_val|
-        # if new_val !== @value, then we must set value on source
+        if new_val != @value
+          @value = new_val
+          source.set_attribute s_attr, @value
+        end
       end
 
       # initial value of source
