@@ -2,12 +2,56 @@
 
 ## Model
 
+Models inherit from the `Vienna::Model` class.
+
 ```ruby
 class Book < Vienna::Model
-  # defined properties have getter/setter methods created
-  property :title, :author
+  field :title
+  field :author
 end
+```
 
+## Fields
+
+Each attribute that a model has should be defined as a field. Fields are
+assumed, by default, to be strings, but a custom type can be passed to
+define the type of field.
+
+```ruby
+class Person
+  field :name
+  field :age, type: String
+  field :eye_color, type: String
+end
+```
+
+Here the `:name` field will have the default `String` type. Specifying
+the type will allow the internals to automatically handling encoding
+and decoding of json data when sending and receiving data from the
+server.
+
+### Accessing fields
+
+The second reason to define fields are that getter and setter methods
+can be automatically created for the defined fields.
+
+Using the previous example, the name can be accessed by:
+
+```ruby
+person.name
+person[:name]
+```
+
+And set using:
+
+```ruby
+person.name = 'Adam'
+person[:name] = 'Adam'
+```
+
+## Creating Models
+
+```ruby
 # create instance
 book = Book.new title: 'First Book', author: 'Adam'
 

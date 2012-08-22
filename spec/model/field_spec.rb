@@ -1,6 +1,14 @@
-describe "Model.property" do
+require 'model/fixtures/simple_model'
+
+describe "Model.field" do
   before do
-    @model = SimpleModelSpec.new
+    @cls = Class.new(Vienna::Model) do
+      field :foo
+      field :woosh
+      field :kapow
+    end
+
+    @model = @cls.new
   end
 
   it "should create a getter and setter method for property" do

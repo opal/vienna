@@ -1,8 +1,18 @@
 describe "Model#initialize" do
   before do
-    @a = SimpleModelSpec.new
-    @b = SimpleModelSpec.new foo: 3.142
-    @c = SimpleModelSpec.new foo: "hello", bar: "world", baz: 42
+    @cls = Class.new(Vienna::Model) do
+      field :foo
+      field :bar
+      field :baz
+    end
+
+    @cls2 = Class.new(Vienna::Model) do
+      primary_key :foo
+    end
+
+    @a = @cls.new
+    @b = @cls.new foo: 3.142
+    @c = @cls.new foo: "hello", bar: "world", baz: 42
   end
 
   it "should have all nil values for attributes when passed no attrs" do
@@ -24,7 +34,7 @@ describe "Model#initialize" do
   end
 
   it "should correctly setup @primary_key variable" do
-    SimpleModelSpec.new.instance_variable_get(:@primary_key).should == :id
-    SimpleModelSpec2.new.instance_variable_get(:@primary_key).should == :foo
+    @cls.new.instance_variable_get(:@primary_key).should == :id
+    @cls2.new.instance_variable_get(:@primary_key).should == :foo
   end
 end

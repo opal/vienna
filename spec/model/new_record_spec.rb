@@ -1,9 +1,15 @@
 describe "Model#new_record?" do
   before do
-    @a = SimpleModelSpec.new id: 0
-    @b = SimpleModelSpec.new id: 1
-    @c = SimpleModelSpec.new
-    @d = SimpleModelSpec.new id: nil
+    @cls = Class.new(Vienna::Model)
+
+    @cls2 = Class.new(Vienna::Model) do
+      primary_key :foo
+    end
+
+    @a = @cls.new id: 0
+    @b = @cls.new id: 1
+    @c = @cls.new
+    @d = @cls.new id: nil
   end
 
   it "should return false if the model has an id" do
@@ -20,6 +26,6 @@ describe "Model#new_record?" do
   end
 
   it "should use the attribute identified by the primary_key" do
-    SimpleModelSpec2.new(foo: 10).new_record?.should be_false
+    @cls2.new(foo: 10).new_record?.should be_false
   end
 end

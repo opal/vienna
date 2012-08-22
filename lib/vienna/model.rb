@@ -49,16 +49,16 @@ module Vienna
     # this way.
     #
     #     class MyModel < Vienna::Model
-    #       property :name
-    #       property :age
+    #       field :name
+    #       field :age
     #     end
     #
     # @param [String, Symbol] name the property name
-    def self.property(*names)
-      names.each do |name|
-        define_method(name) { @attributes[name] }
-        define_method("#{name}=") { |val| @attributes[name] = val }
-      end
+    def self.field(name, options={})
+      @fields[name] = Field.new name, options
+
+      define_method(name) { @attributes[name] }
+      define_method("#{name}=") { |val| @attributes[name] = val }
     end
 
     # @private
@@ -68,6 +68,7 @@ module Vienna
     # Sets up a Model subclass with some default variables.
     def self.setup_subclass
       @primary_key = :id
+      @fields      = {}
     end
 
     # Used to either set or retrieve the primary key for instances of
