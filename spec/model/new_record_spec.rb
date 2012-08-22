@@ -1,8 +1,11 @@
 describe "Model#new_record?" do
   before do
-    @cls = Class.new(Vienna::Model)
+    @cls = Class.new do
+      include Vienna::Model
+    end
 
-    @cls2 = Class.new(Vienna::Model) do
+    @cls2 = Class.new do
+      include Vienna::Model
       primary_key :foo
     end
 

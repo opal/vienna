@@ -2,7 +2,8 @@ require 'model/fixtures/simple_model'
 
 describe "Model.field" do
   before do
-    @cls = Class.new(Vienna::Model) do
+    @cls = Class.new do
+      include Vienna::Model
       field :foo
       field :woosh
       field :kapow

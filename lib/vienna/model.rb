@@ -42,56 +42,62 @@ module Vienna
   # The `[]` and `[]=` methods are used to set the real values which
   # will be serialized/deserialized into json for transport to the
   # server.
-  class Model
+  module Model
 
-    # Define a property on this model subclass. A model can only
-    # serialize and work with properties that have been defined
-    # this way.
-    #
-    #     class MyModel < Vienna::Model
-    #       field :name
-    #       field :age
-    #     end
-    #
-    # @param [String, Symbol] name the property name
-    def self.field(name, options={})
-      @fields[name] = Field.new name, options
+    module ClassMethods
 
-      define_method(name) { @attributes[name] }
-      define_method("#{name}=") { |val| @attributes[name] = val }
+      # Define a property on this model subclass. A model can only
+      # serialize and work with properties that have been defined
+      # this way.
+      #
+      #     class MyModel < Vienna::Model
+      #       field :name
+      #       field :age
+      #     end
+      #
+      # @param [String, Symbol] name the property name
+      def field(name, options={})
+        @fields[name] = Field.new name, options
+
+        define_method(name) { @attributes[name] }
+        define_method("#{name}=") { |val| @attributes[name] = val }
+      end
+
+      # Used to either set or retrieve the primary key for instances of
+      # this Model subclass.
+      #
+      # The primary key can be retreieved by:
+      #
+      #   ModelSubclass.primary_key
+      #
+      # It is best to set a custom key as early as possible inside the
+      # class body definition:
+      #
+      #   class Book < Vienna::Model
+      #     primary_key :isbn
+      #
+      #     property :title
+      #     property :author
+      #   end
+      #
+      # @param [Symbol] key optional key
+      # @return [Symbol]
+      def primary_key(key=nil)
+        key ? @primary_key = key : @primary_key
+      end
+
+      # @private
+      # Sets up a Model subclass with some default variables.
+      def setup_subclass
+        @primary_key = :id
+        @fields      = {}
+      end
     end
 
     # @private
-    def self.inherited(cls); cls.setup_subclass; end
-
-    # @private
-    # Sets up a Model subclass with some default variables.
-    def self.setup_subclass
-      @primary_key = :id
-      @fields      = {}
-    end
-
-    # Used to either set or retrieve the primary key for instances of
-    # this Model subclass.
-    #
-    # The primary key can be retreieved by:
-    #
-    #   ModelSubclass.primary_key
-    #
-    # It is best to set a custom key as early as possible inside the
-    # class body definition:
-    #
-    #   class Book < Vienna::Model
-    #     primary_key :isbn
-    #
-    #     property :title
-    #     property :author
-    #   end
-    #
-    # @param [Symbol] key optional key
-    # @return [Symbol]
-    def self.primary_key(key=nil)
-      key ? @primary_key = key : @primary_key
+    def self.included(cls)
+      cls.extend ClassMethods
+      cls.setup_subclass
     end
 
     # Returns the current attributes set on this instance. It is

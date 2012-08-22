@@ -1,6 +1,8 @@
-describe "Model.inherited" do
+describe "Model.included" do
   before do
-    @cls = Class.new Vienna::Model
+    @cls = Class.new do
+      include Vienna::Model
+    end
   end
 
   it "should setup the @primary_key variable" do

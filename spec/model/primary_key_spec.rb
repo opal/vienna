@@ -1,6 +1,9 @@
 describe "Model.primary_key" do
   before do
-    @normal = Class.new(Vienna::Model)
+    @normal = Class.new do
+      include Vienna::Model
+    end
+
     @custom = Class.new(Vienna::Model) { primary_key :isbn }
   end
 

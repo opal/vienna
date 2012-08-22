@@ -1,12 +1,14 @@
 describe "Model#initialize" do
   before do
-    @cls = Class.new(Vienna::Model) do
+    @cls = Class.new do
+      include Vienna::Model
       field :foo
       field :bar
       field :baz
     end
 
-    @cls2 = Class.new(Vienna::Model) do
+    @cls2 = Class.new do
+      include Vienna::Model
       primary_key :foo
     end
 

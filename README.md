@@ -2,10 +2,12 @@
 
 ## Model
 
-Models inherit from the `Vienna::Model` class.
+Models include the `Vienna::Model` model.
 
 ```ruby
-class Book < Vienna::Model
+class Book
+  include Vienna::Model
+
   field :title
   field :author
 end
@@ -19,6 +21,8 @@ define the type of field.
 
 ```ruby
 class Person
+  include Vienna::Model
+
   field :name
   field :age, type: String
   field :eye_color, type: String
