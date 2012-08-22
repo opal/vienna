@@ -1,6 +1,4 @@
-require 'model/fixtures/simple_model'
-
-describe "Model.field" do
+describe "Fields.field" do
   before do
     @cls = Class.new do
       include Vienna::Model

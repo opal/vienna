@@ -1,4 +1,6 @@
-module Vienna::Model
+require 'vienna/field'
+
+module Vienna
 
   module Fields
 

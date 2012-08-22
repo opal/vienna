@@ -1,4 +1,4 @@
-module Vienna::Model
+module Vienna
 
   # Main attributes support for models
   module Attributes

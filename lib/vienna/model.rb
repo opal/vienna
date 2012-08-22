@@ -1,4 +1,5 @@
-require 'vienna/model/attributes'
+require 'vienna/attributes'
+require 'vienna/fields'
 
 module Vienna
 
@@ -45,7 +46,7 @@ module Vienna
   # will be serialized/deserialized into json for transport to the
   # server.
   module Model
-    include Model::Attributes
-    include Model::Fields
+    include Attributes
+    include Fields
   end
 end
