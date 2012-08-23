@@ -24,7 +24,7 @@ class Person
   include Vienna::Model
 
   field :name
-  field :age, type: String
+  field :age, type: Numeric
   field :eye_color, type: String
 end
 ```

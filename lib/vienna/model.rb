@@ -1,5 +1,6 @@
-require 'vienna/attributes'
-require 'vienna/fields'
+require 'vienna/model/attributes'
+require 'vienna/model/fields'
+require 'vienna/model/persistence'
 
 module Vienna
 
@@ -9,8 +10,11 @@ module Vienna
   # should be defined upfront which will create the necessary getter
   # and setter methods.
   #
-  #   class MyModel < Vienna::Model
-  #     property :name, :age
+  #   class MyModel
+  #     include Vienna::Model
+  #
+  #     field :name, type: String
+  #     field :age, type: Numeric
   #   end
   #
   #   user = MyModel.new
@@ -48,5 +52,7 @@ module Vienna
   module Model
     include Attributes
     include Fields
+    include Persistence
+    include Core
   end
 end

@@ -10,34 +10,6 @@ module Vienna
     # @return [Hash<Symbol, Object>]
     attr_reader :attributes
 
-    # Returns the `id` for this model. This will be nil if the model is
-    # new and/or the id has not been set. This will default to the `id`
-    # attribute, but it can be overriden using `Model.primary_key`.
-    #
-    # @return [Object]
-    attr_reader :id
-
-    # Returns the primary_key for this instance. The primary key
-    # will default to `id` unless overriden in class body.
-    #
-    # @return [Symbol]
-    attr_reader :primary_key
-
-    # Create a new instance of this model. The initial attribute
-    # values should be passed into this method. It is not a good idea
-    # to override `initialize`, but if you do, make sure to call
-    # `super`.
-    #
-    #   Movie.new title: 'My awesome movie'
-    #
-    # @param [Hash<Symbol, Object>] attrs initial attributes for model
-    def initialize(attrs = {})
-      @attributes  = {}
-      @primary_key = self.class.primary_key 
-
-      self.attributes = attrs
-    end
-
     # Directly access the current underlying attribute value for the
     # given name. If the attribute has not been set, or has not been
     # defined using `Model.property`, then `nil` will be returned.
@@ -49,6 +21,7 @@ module Vienna
     # @param [Symbol, String] name attribute name to lookup
     # @return [Object, nil] current attribute value or nil
     def [](name)
+      field = @fields[name]
       @attributes[name]
     end
 
@@ -77,18 +50,13 @@ module Vienna
     #
     # @param [Hash<Symbol, Object>] attrs hash of attributes to set
     def attributes=(attrs)
-      primary_key = @primary_key
-      attributes  = @attributes
-
       attrs.each do |name, value|
-        if name == primary_key
-          attributes[primary_key] = @id = value
-        elsif respond_to? "#{name}="
-          __send__ "#{name}=", value
-        else
-          # ...
-        end
+        @attributes[name] = value
       end
+    end
+
+    def id
+      self[@primary_key]
     end
 
     # Set this models id. This will set the attribute specified by the
@@ -97,25 +65,7 @@ module Vienna
     #
     # @param [Object] id the id to set
     def id=(id)
-      @attributes[@primary_key] = @id = id
-    end
-
-    # Returns whether or not this model is new. A model is new if it
-    # has not yet been assigned an id. Models are assigned id's when
-    # they are retrieved from the server (or saved and returned).
-    #
-    #   user = User.new name: 'adam'
-    #   user.new_record?   # => true
-    #
-    #   user2 = User.new name: 'ben', id: 2
-    #   user2.new_record?  # => false
-    #
-    # If the model has a custom primary key specified, then that
-    # attribute will be used in the check instead of the default `id`.
-    #
-    # @return [true, false]
-    def new_record?
-      @attributes[@primary_key].nil?
+      self[@primary_key] = id
     end
 
     def to_json
