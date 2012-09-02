@@ -1,6 +1,11 @@
 describe "Observable#set_attribute" do
   before do
-    @obj = ObservableSetAttributeSpec.new
+    @obj = Class.new do
+      include Vienna::Observable
+
+      attr_accessor :foo
+      attr_reader :bar
+    end.new
   end
 
   it "should use the setter for the given attribute" do

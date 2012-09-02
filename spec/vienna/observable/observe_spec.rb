@@ -1,6 +1,11 @@
 describe "Observable#observe" do
   before do
-    @obj = ObservableObserveSpec.new
+    @obj = Class.new do
+      include Vienna::Observable
+
+      attr_accessor :foo, :bar, :baz
+      attr_reader :observers
+    end.new
   end
 
   it "should allow handlers to be registered to observe given attribute changes" do
@@ -77,8 +82,15 @@ end
 
 describe "Observable#observe with a path" do
   before do
-    @foo = ObservableObserveSpec.new
-    @bar = ObservableObserveSpec.new
+    cls = Class.new do
+      include Vienna::Observable
+
+      attr_accessor :foo, :bar, :baz
+      attr_reader :observers
+    end
+
+    @foo = cls.new
+    @bar = cls.new
     @foo.bar = @bar
     @bar.baz = 42
   end

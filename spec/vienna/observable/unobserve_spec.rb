@@ -1,6 +1,11 @@
 describe "Observable#unobserve" do
   before do
-    @obj = ObservableObserveSpec.new
+    @obj = Class.new do
+      include Vienna::Observable
+
+      attr_accessor :foo, :bar, :baz
+      attr_reader :observers
+    end.new
   end
 
   it "should have no action if observer not setup for attr" do

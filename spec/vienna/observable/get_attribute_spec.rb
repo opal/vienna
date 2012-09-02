@@ -1,6 +1,32 @@
 describe "Observable#get_attribute" do
   before do
-    @obj = ObservableGetAttributeSpec.new 'adam', 42, 3.142, 'omg'
+    @obj = Class.new do
+      attr_accessor :foo, :bar
+      attr_reader :first_name
+
+      def initialize
+        @foo = 'adam'
+        @bar = 42
+        @baz = 3.142
+        @buz = 'omg'
+      end
+
+      def bar
+        @bar
+      end
+
+      def baz
+        @baz
+      end
+
+      def baz?
+        'should not return this one'
+      end
+
+      def buz?
+        @buz
+      end
+    end.new
   end
 
   it "should return attribute values for simple keys" do

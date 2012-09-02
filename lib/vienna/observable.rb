@@ -158,7 +158,3 @@ module Vienna
 
   end
 end
-
-class Object
-  include Vienna::Observable
-end
