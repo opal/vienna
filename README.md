@@ -41,33 +41,33 @@ can be automatically created for the defined attributes.
 
 Using the previous example, the name can be accessed by:
 
-		```ruby
-		person.name
-		person[:name]
-		```
+```ruby
+person.name
+person[:name]
+```
 
 And set using:
 
-		```ruby
-		person.name = 'Adam'
-		person[:name] = 'Adam'
-		```
+```ruby
+person.name = 'Adam'
+person[:name] = 'Adam'
+```
 
 ## Creating Models
 
-		```ruby
-		# create instance
-		book = Book.new title: 'First Book', author: 'Adam'
+```ruby
+# create instance
+book = Book.new title: 'First Book', author: 'Adam'
 
-		# use created setter
-		book.title = 'Amended title'
+# use created setter
+book.title = 'Amended title'
 
-		# getter
-		book.title    # => 'Amended title'
+# getter
+book.title    # => 'Amended title'
 
-		# no id, so it must be new
-		book.new?     # => true
+# no id, so it must be new
+book.new?     # => true
 
-		# for sending over http/ajax
-		book.to_json  # => '{"title": "Amended title", "author": "Adam"}'
-		```
+# for sending over http/ajax
+book.to_json  # => '{"title": "Amended title", "author": "Adam"}'
+```
