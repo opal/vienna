@@ -3,8 +3,8 @@ describe "Vienna::Core.add" do
     @cls = Class.new do
       include Vienna::Model
 
-      field :name
-      field :age, type: String
+      attribute :name
+      attribute :age, :string
     end
 
     @cls.add(name: 'Adam Beynon', id: 1)

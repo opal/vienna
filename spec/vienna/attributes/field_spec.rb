@@ -1,10 +1,10 @@
-describe "Fields.field" do
+describe "Attributes.attribute" do
   before do
     @cls = Class.new do
       include Vienna::Model
-      field :foo
-      field :woosh
-      field :kapow
+      attribute :foo
+      attribute :woosh
+      attribute :kapow
     end
 
     @model = @cls.new

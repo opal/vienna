@@ -3,7 +3,7 @@ describe "Vienna::Core.get" do
     @cls = Class.new do
       include Vienna::Model
 
-      field :name
+      attribute :name
     end
 
     @cls.add(id: 1, name: 'Foo')
@@ -24,7 +24,7 @@ describe "Vienna::Core.get!" do
   before do
     @cls = Class.new do
       include Vienna::Model
-      field :name
+      attribute :name
     end
 
     @cls.add(id: 1, name: 'Foo')

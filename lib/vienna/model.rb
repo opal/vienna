@@ -1,5 +1,4 @@
 require 'vienna/model/attributes'
-require 'vienna/model/fields'
 require 'vienna/model/persistence'
 
 module Vienna
@@ -51,7 +50,6 @@ module Vienna
   # server.
   module Model
     include Attributes
-    include Fields
     include Persistence
     include Core
   end

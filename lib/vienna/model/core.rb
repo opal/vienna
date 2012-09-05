@@ -55,7 +55,7 @@ module Vienna
     def initialize(attrs = {})
       @attributes  = {}
       @primary_key = self.class.primary_key
-      @fields      = self.class.fields
+      @columns     = self.class.attributes
 
       @changed_attributes = {}
       @new_record         = true

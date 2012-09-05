@@ -21,7 +21,7 @@ module Vienna
     # @param [Symbol, String] name attribute name to lookup
     # @return [Object, nil] current attribute value or nil
     def [](name)
-      field = @fields[name]
+      column = @columns[name]
       @attributes[name]
     end
 
@@ -78,6 +78,27 @@ module Vienna
     end
 
     module ClassMethods
+      
+      # Define a property on this model subclass. A model can only
+      # serialize and work with properties that have been defined
+      # this way.
+      #
+      #     class MyModel < Vienna::Model
+      #       field :name
+      #       field :age
+      #     end
+      #
+      # @param [String, Symbol] name the property name
+      def attribute(name, type=:string)
+        attributes[name] = BaseAttribute.new name, type
+
+        define_method(name) { @attributes[name] }
+        define_method("#{name}=") { |val| @attributes[name] = val }
+      end
+
+      def attributes
+        @attributes ||= {}
+      end
 
       # Used to either set or retrieve the primary key for instances of
       # this Model subclass.

@@ -2,9 +2,9 @@ describe "Model#initialize" do
   before do
     @cls = Class.new do
       include Vienna::Model
-      field :foo
-      field :bar
-      field :baz
+      attribute :foo
+      attribute :bar
+      attribute :baz
     end
 
     @cls2 = Class.new do

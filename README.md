@@ -8,66 +8,66 @@ Models include the `Vienna::Model` model.
 class Book
   include Vienna::Model
 
-  field :title
-  field :author
+  attribute :title
+  attribute :author
 end
 ```
 
-## Fields
+## Attributes
 
-Each attribute that a model has should be defined as a field. Fields are
-assumed, by default, to be strings, but a custom type can be passed to
-define the type of field.
+Each attribute that a model has should be defined as an attribute.
+Attributes are assumed, by default, to be strings, but a custom
+type can be passed to define the type of attribute.
 
 ```ruby
 class Person
   include Vienna::Model
 
-  field :name
-  field :age, type: Numeric
-  field :eye_color, type: String
+  attribute :name
+  attribute :age, :numeric
+  attribute :eye_color, :string
 end
 ```
 
-Here the `:name` field will have the default `String` type. Specifying
+Here the `:name` attribute will have the default `String` type. Specifying
 the type will allow the internals to automatically handling encoding
 and decoding of json data when sending and receiving data from the
 server.
 
-### Accessing fields
+### Accessing attributes
 
-The second reason to define fields are that getter and setter methods
-can be automatically created for the defined fields.
+The second reason to define attributes are that getter and setter methods
+can be automatically created for the defined attributes.
 
 Using the previous example, the name can be accessed by:
 
-```ruby
-person.name
-person[:name]
-```
+		```ruby
+		person.name
+		person[:name]
+		```
 
 And set using:
 
-```ruby
-person.name = 'Adam'
-person[:name] = 'Adam'
-```
+		```ruby
+		person.name = 'Adam'
+		person[:name] = 'Adam'
+		```
 
 ## Creating Models
 
-```ruby
-# create instance
-book = Book.new title: 'First Book', author: 'Adam'
+		```ruby
+		# create instance
+		book = Book.new title: 'First Book', author: 'Adam'
 
-# use created setter
-book.title = 'Amended title'
+		# use created setter
+		book.title = 'Amended title'
 
-# getter
-book.title    # => 'Amended title'
+		# getter
+		book.title    # => 'Amended title'
 
-# no id, so it must be new
-book.new?     # => true
+		# no id, so it must be new
+		book.new?     # => true
 
-# for sending over http/ajax
-book.to_json  # => '{"title": "Amended title", "author": "Adam"}'
-```
+		# for sending over http/ajax
+		book.to_json  # => '{"title": "Amended title", "author": "Adam"}'
+		```
