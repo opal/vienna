@@ -2,7 +2,27 @@ module Vienna
   # Persistence
   module Persistence
     module ClassMethods
-
+      # For a model to be persisted, a storage adapter must be set on
+      # the model. This can either be done by the model itself:
+      #
+      #     store = Vienna::RESTStorage.new
+      #
+      #     class User
+      #       include Vienna::Model
+      #     end
+      #
+      #     User.storage = store
+      #
+      # Or by the storage:
+      #
+      #     store.add_model User
+      #
+      # In a real world running application, the booting process itself
+      # will register all model classes with the application's storage
+      # adapter, so you don't need to do this yourself.
+      #
+      # @return [Vienna::BaseStorage]
+      attr_accessor :storage
     end
 
     # @private
