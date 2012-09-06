@@ -1,4 +1,4 @@
-require 'vienna/metamorph_runtime'
+require 'vienna/vendor/metamorph'
 `var METAMORPH = Metamorph;`
 
 module Vienna

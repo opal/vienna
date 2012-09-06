@@ -1,5 +1,3 @@
-require 'vienna/run_loop'
-
 module Vienna
 
   class Binding

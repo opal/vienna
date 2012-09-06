@@ -1,10 +1,10 @@
 module Vienna
-  class BaseAttribute
+  class Attribute
     
     def self.inherited(base)
       if name = base.name
         name = name.sub(/Attribute$/, '').demodulize.underscore
-        BaseAttribute[name] = base
+        Attribute[name] = base
       end
     end
     
