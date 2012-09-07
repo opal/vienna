@@ -90,45 +90,7 @@ module Vienna
     def self.primary_key(key=nil)
       key ? @primary_key = key : @primary_key ||= :id
     end
-    
-    # Add a new instance of this model class from the given attributes.
-    # The attributes should be a Hash (from json?).
-    def self.add(attributes)
-      arr = attributes.is_a?(Array) ? attributes : [attributes]
 
-      arr.each do |hash|
-        model = self.new hash
-        model.instance_variable_set :@new_record, false
-
-        id_map[model.id] = model
-      end
-    end
-
-    # Return the model instance with the primary key of the given id.
-    # This will return `nil` if no record exists locally.
-    #
-    # This will not try to load the record from the store if it does
-    # not exist locally.
-    #
-    #     User.get(1)     # => #<User: (id: 1)>
-    #     User.get(42)    # => nil
-    #
-    # @return [Object, nil]
-    def self.get(id)
-      id_map[id]
-    end
-
-    # Similar to `.get`, except that an error will be raised if the
-    # model with the given id is not found.
-    def self.get!(id)
-      id_map[id] or raise "Not Found"
-    end
-
-    # Hash of all models from their id => instance
-    def self.id_map
-      @id_map ||= {}
-    end
-    
     # Returns the current attributes set on this instance. It is
     # not good practice to access this hash directly, instead use the
     # created getter/setter methods for attributes.
