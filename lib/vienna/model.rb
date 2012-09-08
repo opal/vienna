@@ -46,6 +46,23 @@ module Vienna
   # server.
   class Model
     include Observable
+    
+    # Add either a single or an array of models to this collection. The
+    # added models should already be instances of the model type for this
+    # class (which defaults to `Vienna::Model`).
+    #
+    #     users.add User.new(name: 'Adam', id: 42)
+    #
+    # @param [Vienna::Model, Array<Vienna::Model>] models model(s) to add
+    def self.add(models)
+      arr = models.is_a?(Array) ? models : [models]
+
+      arr.each do |model|
+        model.instance_variable_set :@new_record, false
+
+        @id_map[model.id] = model
+      end
+    end
 
     # Define a property on this model subclass. A model can only
     # serialize and work with properties that have been defined
@@ -67,7 +84,29 @@ module Vienna
     def self.attributes
       @attributes ||= {}
     end
+
+    # Reset this model subclass
+    def self.clear!
+      @id_map = {}
+      @_size  = 0
+    end
+
+    def self.get(id)
+      @id_map[id]
+    end
     
+    def self.get!(id)
+      @id_map[id] or raise 'Not found'
+    end
+
+    def self.id_map
+      @id_map
+    end
+
+    def self.inherited(model)
+      model.clear!
+    end
+
     # Used to either set or retrieve the primary key for instances of
     # this Model subclass.
     #

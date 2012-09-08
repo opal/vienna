@@ -12,14 +12,6 @@ module ViewSpecs
 end
 
 describe Vienna::View do
-  describe '#content' do
-    it 'returns any passed content to the initializer' do
-      obj = Object.new
-      ViewSpecs::ViewA.new(obj).content.should == obj
-      ViewSpecs::ViewA.new.content.should be_nil
-    end
-  end
-
   describe '#element' do
     it 'is a new div element when no element specified on class' do
       element = ViewSpecs::ViewA.new.element

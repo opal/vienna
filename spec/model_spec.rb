@@ -10,7 +10,49 @@ module ModelSpecs
   end
 end
 
+ModelSpecs::User.add ModelSpecs::User.new(foo: 'adam', id: 1)
+ModelSpecs::User.add ModelSpecs::User.new(foo: 'ben', id: 2)
+
+ModelSpecs::User.add([ModelSpecs::User.new(foo: 'tom', id: 3),
+                      ModelSpecs::User.new(foo: 'tim', id: 4)])
+
 describe Vienna::Model do
+  describe '.add' do
+    it 'makes the model findable through id_map' do
+      ModelSpecs::User.id_map[1].foo.should == 'adam'
+      ModelSpecs::User.id_map[2].foo.should == 'ben'
+    end
+
+    it 'adds multiple models when passed an array' do
+      ModelSpecs::User.id_map[3].foo.should == 'tom'
+      ModelSpecs::User.id_map[4].foo.should == 'tim'
+    end
+  end
+
+  describe '.get' do
+    it 'returns the model instance with the given id' do
+      ModelSpecs::User.get(1).foo.should == 'adam'
+      ModelSpecs::User.get(2).foo.should == 'ben'
+    end
+
+    it 'returns nil when no record with matching id is found' do
+      ModelSpecs::User.get(42).should be_nil
+    end
+  end
+
+  describe '.get!' do
+    it "returns the model with the given primary key" do
+      ModelSpecs::User.get!(1).foo.should == 'adam'
+      ModelSpecs::User.get!(2).foo.should == 'ben'
+    end
+      
+    it "raises an error if the given record is not found" do
+      lambda {
+        ModelSpecs::User.get!(42)
+      }.should raise_error(Exception)
+    end
+  end
+
   describe '.attribute' do
     before do
       @model = ModelSpecs::User.new

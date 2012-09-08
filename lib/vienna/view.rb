@@ -15,27 +15,35 @@ module Vienna
       selector ? @selector = selector : @selector
     end
 
-    # The content of a view is the object passed to the initializer.
-    # This will in most cases be the model that the view is rendering
-    # for.
-    #
-    # @return [Object]
-    attr_reader :content
-
     attr_reader :element
 
-    def initialize(content=nil)
-      @content = content
-    
+    def initialize(*)
       if el = self.class.element
         @element = Document[el]
       else
         @element = JQuery.new
       end
+      
+      @binded_text_fields = []
     end
     
     def find(selector)
       @element.find(selector)
+    end
+    
+    def render
+      # 1. find template
+      # 2. render it
+      # 3. add all bindings
+    end
+
+    # @private Override TagHelper method
+    def text_field_added(object, method, element_id)
+      # @element.on(:change, "##{element_id}") do
+        # object.set_attribute(method)
+      # end
+
+      # @binded_text_fields << [object, method, element_id]
     end
   end
 end
