@@ -1,49 +1,51 @@
+require 'vienna/tag_helper'
+require 'vienna/view_rednerer'
+
 module Vienna
-  #     class UserView < Vienna::View
-  #       def render
-  #         @element.html = "<span>Name: #{content.name}, age: #{content.age}</span>"
-  #       end
-  #     end
-  #
-  #     user = User.new(name: 'Adam', age: 26)
-  #     view = UserView.new(user)
-  #
-  #     view.element.html
-  #     # => <span>Name: Adam, age: 26</span>
   class View
-    def self.element(selector = nil)
-      selector ? @selector = selector : @selector
+    include Vienna::TagHelper
+
+    @unique_id = 0
+    def self.unique_id(view)
+      id = "vn-view-#{@unique_id = @unique_id.next}"
+      @views[id] = view
+      id
     end
 
-    attr_reader :element
-
-    def initialize(*)
-      if el = self.class.element
-        @element = Document[el]
-      else
-        @element = JQuery.new
-      end
-      
-      @binded_text_fields = []
+    @views = {}
+    def self.[](view_id)
+      @views[view_id]
     end
-    
+
+    def element
+      return @element if @element
+    end
+
+    def element_id
+      @element_id ||= View.unique_id(self)
+    end
+
     def find(selector)
       @element.find(selector)
     end
-    
-    def render
+
+    def render(renderer)
       # 1. find template
-      # 2. render it
-      # 3. add all bindings
+      # 2. render template **only** if it exists
+      # ... no template means this method is a no-op
     end
 
-    # @private Override TagHelper method
-    def text_field_added(object, method, element_id)
-      # @element.on(:change, "##{element_id}") do
-        # object.set_attribute(method)
-      # end
+    def render_view(options={})
+      renderer = ViewRenderer.new(tag_name, options)
 
-      # @binded_text_fields << [object, method, element_id]
+      renderer.id = element_id
+      render(renderer)
+
+      renderer.to_s
+    end
+
+    def tag_name
+      :div
     end
   end
 end

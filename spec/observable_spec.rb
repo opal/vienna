@@ -1,6 +1,4 @@
 class ObservableSpec
-  include Vienna::Observable
-
   attr_accessor :foo, :bar
   attr_reader :first_name, :baz
 
