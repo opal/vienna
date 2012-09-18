@@ -7,6 +7,4 @@ Opal::RakeTask.new do |t|
   t.dependencies = %w(opal-spec opal-jquery)
 end
 
-task :default do
-  "nothing for now"
-end
+task :default => 'opal:test'
