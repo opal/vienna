@@ -1,47 +1,28 @@
-require 'vienna/tag_helper'
-require 'vienna/view_rednerer'
-
 module Vienna
   class View
-    include Vienna::TagHelper
-
-    @unique_id = 0
-    def self.unique_id(view)
-      id = "vn-view-#{@unique_id = @unique_id.next}"
-      @views[id] = view
-      id
+    def self.element(selector=nil)
+      selector ? @element = selector : @element
     end
 
-    @views = {}
-    def self.[](view_id)
-      @views[view_id]
+    def self.events
+      @events ||= []
     end
 
-    def element
-      return @element if @element
+    def self.on(name, selector, &handler)
+      events << [name, selector, handler]
     end
 
-    def element_id
-      @element_id ||= View.unique_id(self)
-    end
+    def initialize
+      if el = self.class.element
+        @element = Document[el]
+      else
+        @element = Element.new(tag_name)
+      end
 
-    def find(selector)
-      @element.find(selector)
-    end
-
-    def render(renderer)
-      # 1. find template
-      # 2. render template **only** if it exists
-      # ... no template means this method is a no-op
-    end
-
-    def render_view(options={})
-      renderer = ViewRenderer.new(tag_name, options)
-
-      renderer.id = element_id
-      render(renderer)
-
-      renderer.to_s
+      self.class.events.each do |e|
+        name, selector, handler = e
+        @element.on(name, selector) { |e| instance_exec(e, &handler) }
+      end
     end
 
     def tag_name
