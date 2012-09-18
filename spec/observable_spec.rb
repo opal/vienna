@@ -22,38 +22,6 @@ describe Vienna::Observable do
   before do
     @obj = ObservableSpec.new
   end
-
-  describe "#get_attribute" do
-    it "returns attribute values for simple keys" do
-      @obj.get_attribute(:foo).should == 'adam'
-      @obj.get_attribute(:bar).should == 42
-    end
-
-    it "checks for boolean (foo?) accessors after normal getters" do
-      @obj.get_attribute(:baz).should == 3.142
-      @obj.get_attribute(:buz).should == 'omg'
-    end
-
-    it "returns nil for unknown attributes" do
-      @obj.get_attribute(:fullname).should be_nil
-      @obj.get_attribute(:pingpong).should be_nil
-    end
-  end
-  
-  describe "#set_attribute" do
-    it "uses the setter for the given attribute" do
-      @obj.set_attribute(:foo, 42)
-      @obj.foo.should == 42
-
-      @obj.set_attribute(:foo, 3.142)
-      @obj.foo.should == 3.142
-    end
-
-    it "returns nil when setting an attribute with no setter method" do
-      @obj.set_attribute(:baz, 'this should not be set')
-      @obj.baz.should == 3.142
-    end
-  end
   
   describe "#observe" do
     it "should allow handlers to be registered to observe given attribute changes" do

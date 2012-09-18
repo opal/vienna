@@ -1,27 +1,5 @@
 module Vienna
   module Observable
-
-    # Gets the attribute by the given name. This currently will only
-    # retrieve simple properties, by trying for a method with the given
-    # name first, then trying with a "?" prefix for boolean attributes.
-    # If neither are methods on this object, then nil is returned.
-    #
-    # @param [String, Symbol] name attribute name to get
-    # @return [Object, nil]
-    def get_attribute(name)
-      if respond_to? name
-        __send__ name
-      elsif respond_to? "#{name}?"
-        __send__ "#{name}?"
-      end
-    end
-
-    def set_attribute(name, val)
-      if respond_to? "#{name}="
-        __send__ "#{name}=", val
-      end
-    end
-
     # Start observing an attribute on this object. This will replace the
     # setter method for the given attribute with a singleton one on this
     # instance that calls super, to use the default implementation, and
@@ -57,7 +35,7 @@ module Vienna
         observers = (@observers ||= {})
 
         unless handlers = observers[name]
-          old_value = get_attribute(name)
+          old_value = attribute_get(name)
           handlers  = observers[name] = []
 
           if respond_to? "#{name}="
@@ -149,7 +127,7 @@ module Vienna
 
       # The value of the attr `@name` on `@object` changed
       def value_changed
-        value = @object.get_attribute @attr
+        value = @object.attribute_get @attr
 
         @next.object = value if @next
         @handler.call value if @handler
