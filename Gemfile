@@ -1,7 +1,8 @@
 source :rubygems
+gemspec
 
 gem "rake"
 
-gem "opal", :git => 'git://github.com/opal/opal.git'
-gem "opal-jquery", :git => 'git://github.com/opal/opal-jquery.git'
+gem "opal"
+gem "opal-jquery"
 gem "opal-spec"
