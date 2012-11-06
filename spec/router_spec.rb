@@ -16,11 +16,24 @@ describe Vienna::Router do
       
       context=self
       router.define do
-        page('users/:id') { context.run_async { params[:id].should == 1 } }
+        page('/users/:id') { context.run_async { params[:id].should == 1 } }
       end
 
-      router.goto('users/1')
-      #run_async { true } 
+      router.goto('/users/1')
+      
+    end
+
+    async "/users/name/francesco should redirect to /users/1" do
+
+      router=Vienna::Router.new
+      
+      context=self
+      router.define do
+        page('/users/name/francesco') { redirect('/users/1') }
+        page('/users/:id') { context.run_async { params[:id].should == 1 } }
+      end
+      
+      router.goto('/users/name/francesco')
       
     end
 
