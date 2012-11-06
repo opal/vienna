@@ -33,8 +33,8 @@ describe Vienna::Router do
         page('/users/:id') { context.run_async { params[:id].should == 1 } }
       end
 
-      `window.location.hash="/users/1";`
-
+      #`window.location.hash="/users/1";`
+      router.hash  = "/users/1"
     end
 
     async "/users/name/francesco should redirect to /users/1" do

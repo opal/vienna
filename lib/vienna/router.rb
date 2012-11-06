@@ -38,7 +38,7 @@ module Vienna
     end
 
     def hash=(url)
-      `window.hash=#{url}`
+      `window.location.hash=#{url}`
     end
 
     def hash
