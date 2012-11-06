@@ -14,7 +14,7 @@ module Vienna
       unless @before_filters.nil?
         filters=@before_filters[path]
         unless filters.nil?
-          filters.each {|blk| puts path;instance_eval(&blk) }
+          filters.each {|blk| instance_eval(&blk) }
         end
       end
     end

@@ -34,7 +34,7 @@ describe Vienna::Router do
       end
 
       #`window.location.hash="/users/1";`
-      router.hash  = "/users/1"
+      router.hash = "/users/1"
     end
 
     async "/users/name/francesco should redirect to /users/1" do
