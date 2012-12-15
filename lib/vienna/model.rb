@@ -1,15 +1,14 @@
 require 'vienna/eventable'
+require 'vienna/attributes'
+require 'vienna/columns'
 
 module Vienna
   class Model
     include Eventable
+    include Attributes
+    include Columns
     extend Eventable
     extend Enumerable
-
-    def self.attribute(name)
-      define_method(name) { @attributes[name] }
-      define_method("#{name}=") { |val| @attributes[name] = val }
-    end
 
     def self.inherited(base)
       base.reset!
@@ -34,21 +33,20 @@ module Vienna
     def self.each(&block)
       @_models.each { |m| block.call m }
     end
+
+    def self.primary_key
+      :id
+    end
     
     def initialize(attributes={})
       @attributes = {}
+      @cached_attributes = {}
+      @columns = self.class.columns
+      @primary_key = self.class.primary_key
+      @new_record = true
 
-      attributes.each do |name, val|
-        __send__ "#{name}=", val if respond_to? "#{name}="
-      end
-    end
-
-    def [](name)
-      @attributes[name]
-    end
-
-    def []=(name, value)
-      @attributes[name] = value
+      self.attributes = attributes
+      @attributes[@primary_key] = nil unless @attributes.key?(@primary_key)
     end
 
     def save

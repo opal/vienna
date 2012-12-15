@@ -8,7 +8,7 @@ of [TodoMVC](http://todomvc.com).
 
 ```ruby
 class Book < Vienna::Model
-  attribute :title
-  attribute :author
+  string :title
+  string :author
 end
 ```
