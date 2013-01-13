@@ -1,14 +1,11 @@
 require 'vienna/eventable'
-require 'vienna/attributes'
 require 'vienna/columns'
 
 module Vienna
   class Model
     include Eventable
-    include Attributes
     include Columns
     extend Eventable
-    extend Enumerable
 
     def self.inherited(base)
       base.reset!
@@ -37,16 +34,37 @@ module Vienna
     def self.primary_key
       :id
     end
-    
+
     def initialize(attributes={})
       @attributes = {}
       @cached_attributes = {}
-      @columns = self.class.columns
       @primary_key = self.class.primary_key
       @new_record = true
 
       self.attributes = attributes
       @attributes[@primary_key] = nil unless @attributes.key?(@primary_key)
+    end
+
+    def [](name)
+      @attributes[name]
+    end
+
+    def []=(name, value)
+      @attributes[name] = value
+    end
+
+    def attributes=(attributes)
+      attributes.each do |attr_name, value|
+        @attributes[attr_name] = value
+      end
+    end
+
+    def id
+      self[@primary_key]
+    end
+
+    def id=(value)
+      self[@primary_key] = value
     end
 
     def save

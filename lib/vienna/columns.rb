@@ -5,79 +5,35 @@ module Vienna
     end
 
     module ClassMethods
-      def add_column(attr_name, column_klass)
-        columns[attr_name] = column_klass.new attr_name
-
-        define_method(attr_name) { self[attr_name] }
-        define_method("#{attr_name}=") { |value| self[attr_name] = value }
+      def add_column(attr_name)
+        define_method(attr_name) { @attributes[attr_name] }
+        define_method("#{attr_name}=") { |value| @attributes[attr_name] = value }
       end
 
       def boolean(attr_name)
-        add_column attr_name, BooleanColumn
+        add_column attr_name
       end
 
       def date(attr_name)
-        add_column attr_name, DateColumn
+        add_column attr_name
       end
 
       def float(attr_name)
-        add_column attr_name, FloatColumn
+        add_column attr_name
       end
 
       def integer(attr_name)
-        add_column attr_name, IntegerColumn
+        add_column attr_name
+        define_method("#{attr_name}=") { |value| @attributes[attr_name] = value.to_i }
       end
 
       def string(attr_name)
-        add_column attr_name, StringColumn
+        add_column attr_name
       end
 
       def time(attr_name)
-        add_column attr_name, TimeColumn
+        add_column attr_name
       end
-
-      def columns
-        @columns ||= {}
-      end
-    end
-
-    class Column
-      def initialize(name, default = nil)
-        @name = name
-        @default = type_cast(default)
-      end
-
-      def type_cast(value)
-        value
-      end
-
-      def type_cast_for_write(value)
-        value
-      end
-    end
-
-    class BooleanColumn < Column
-      def type_cast(value)
-        !!value
-      end
-    end
-
-    class DateColumn < Column
-    end
-
-    class FloatColumn < Column
-    end
-
-    class IntegerColumn < Column
-      def type_cast(value)
-        value.to_i
-      end
-    end
-
-    class StringColumn < Column
-    end
-
-    class TimeColumn < Column
     end
   end
 end

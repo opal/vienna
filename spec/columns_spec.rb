@@ -4,7 +4,7 @@ describe Vienna::Columns do
   describe ".add_column" do
     before do
       @klass = Class.new(Vienna::Model) do
-        add_column :foo, Vienna::Columns::Column
+        add_column :foo
       end
     end
 
@@ -23,44 +23,50 @@ describe Vienna::Columns do
   end
 
   describe ".boolean" do
-    it "creates a BooleanColumn for the given attribute name" do
+    it "creates a getter and setter for the given attribute name" do
       klass = Class.new(Vienna::Model) { boolean :logged_in }
-      klass.columns[:logged_in].should be_kind_of(Vienna::Columns::BooleanColumn)
+      klass.new.respond_to?(:logged_in).should be_true
+      klass.new.respond_to?(:logged_in=).should be_true
     end
   end
 
   describe ".date" do
-    it "creates a DateColumn for the given attribute name" do
+    it "creates a getter and setter for the given attribute name" do
       klass = Class.new(Vienna::Model) { date :last_seen }
-      klass.columns[:last_seen].should be_kind_of(Vienna::Columns::DateColumn)
+      klass.new.respond_to?(:last_seen).should be_true
+      klass.new.respond_to?(:last_seen=).should be_true
     end
   end
 
   describe ".float" do
-    it "creates a FloatColumn for the given attribute name" do
+    it "creates a getter and setter for the given attribute name" do
       klass = Class.new(Vienna::Model) { float :distance }
-      klass.columns[:distance].should be_kind_of(Vienna::Columns::FloatColumn)
+      klass.new.respond_to?(:distance).should be_true
+      klass.new.respond_to?(:distance=).should be_true 
     end
   end
 
   describe ".integer" do
-    it "creates an IntegerColumn for the given attribute name" do
+    it "creates a getter and setter for the given attribute name" do
       klass = Class.new(Vienna::Model) { integer :post_count }
-      klass.columns[:post_count].should be_kind_of(Vienna::Columns::IntegerColumn)
+      klass.new.respond_to?(:post_count).should be_true
+      klass.new.respond_to?(:post_count=).should be_true
     end
   end
 
   describe ".string" do
-    it "creates a StringColumn for the given attribute name" do
+    it "creates a getter and setter for the given attribute name" do
       klass = Class.new(Vienna::Model) { string :user_name }
-      klass.columns[:user_name].should be_kind_of(Vienna::Columns::StringColumn)
+      klass.new.respond_to?(:user_name).should be_true
+      klass.new.respond_to?(:user_name=).should be_true
     end
   end
 
   describe ".time" do
-    it "creates a TimeColumn for the given attribute name" do
+    it "creates a getter and setter for the given attribute name" do
       klass = Class.new(Vienna::Model) { time :joined_at }
-      klass.columns[:joined_at].should be_kind_of(Vienna::Columns::TimeColumn)
+      klass.new.respond_to?(:joined_at).should be_true
+      klass.new.respond_to?(:joined_at=).should be_true
     end
   end
 end
