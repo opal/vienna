@@ -21,5 +21,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'opal', '~> 0.3.36'
   s.add_dependency 'opal-jquery', '~> 0.0.5'
 
-  s.add_development_dependency 'opal-spec', '~> 0.2.8'
+  s.add_development_dependency 'opal-spec', '~> 0.2.10'
 end
