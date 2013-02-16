@@ -1,1 +1,6 @@
-OpalSpec::Runner.autorun
+require 'vendor/jquery'
+require 'opal-spec'
+require 'opal-jquery'
+require 'vienna'
+
+Opal::Spec::Runner.autorun
