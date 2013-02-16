@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 class EventableSpec
   include Vienna::Eventable
 

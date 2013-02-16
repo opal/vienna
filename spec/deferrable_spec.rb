@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 class DeferrableSpec
   include Vienna::Deferrable
 end
