@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
+$LOAD_PATH << File.expand_path('../lib', __FILE__)
+require 'vienna/version'
 
 Gem::Specification.new do |s|
   s.name         = 'vienna'
-  s.version      = '0.0.1'
+  s.version      = Vienna::VERSION
   s.author       = 'Adam Beynon'
   s.email        = 'adam@adambeynon.com'
   s.homepage     = 'http://opalrb.org'
