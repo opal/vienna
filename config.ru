@@ -1,11 +1,13 @@
 require 'bundler'
 Bundler.require
 
+require 'opal-spec'
+
 html = <<-HTML
   <!DOCTYPE html>
   <html>
   <head>
-    <title>opal-jquery specs</title>
+    <title>vienna specs</title>
   </head>
     <body>
       <script src="/assets/autorun.js"></script>
