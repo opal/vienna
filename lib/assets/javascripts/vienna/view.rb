@@ -8,25 +8,70 @@ module Vienna
       @events ||= []
     end
 
-    def self.on(name, selector, &handler)
+    def self.on(name, selector = nil, method = nil, &handler)
+      handler = proc { |evt| __send__(method, evt) } if method
       events << [name, selector, handler]
     end
 
-    def initialize
+    def element
+      return @element if @element
+
       if el = self.class.element
-        @element = Document[el]
+        el = Element.find el
       else
-        @element = Element.new(tag_name)
+        el = Element.new tag_name
       end
 
-      self.class.events.each do |e|
-        name, selector, handler = e
-        @element.on(name, selector) { |e| instance_exec(e, &handler) }
-      end
+      @element = el
+    end
+
+    # Method to override with code for rendering this element.
+    #
+    #     class MyView < Vienna::View
+    #       def render
+    #         element.html = "Welcome to this page!"
+    #       end
+    #     end
+    #
+    def render; end
+
+    def class_name
+      ''
     end
 
     def tag_name
       :div
     end
+
+    def setup_events
+      return @dom_events if @dom_events
+
+      el = element
+      @dom_events = self.class.events.map do |event|
+        name, selector, handler = event
+        wrapper = proc { |e| instance_exec(c, &handler) }
+
+        el.on(name, selector, &wrapper)
+        [name, selector, wrapper]
+      end
+    end
+
+    def teardown_events
+      el = element
+      @dom_events.each do |event|
+        name, selector, wrapper = event
+        el.off(name, selector, &wrapper)
+      end
+    end
+  end
+
+  def remove
+    element.remove
+  end
+
+  def destroy
+    teardown_events
+    remove
   end
 end
+
