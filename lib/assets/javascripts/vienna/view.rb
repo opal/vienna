@@ -121,7 +121,7 @@ module Vienna
       el = element
       @dom_events = self.class.events.map do |event|
         name, selector, handler = event
-        wrapper = proc { |e| instance_exec(c, &handler) }
+        wrapper = proc { |e| instance_exec(e, &handler) }
 
         el.on(name, selector, &wrapper)
         [name, selector, wrapper]
