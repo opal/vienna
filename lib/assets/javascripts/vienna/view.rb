@@ -135,15 +135,15 @@ module Vienna
         el.off(name, selector, &wrapper)
       end
     end
-  end
 
-  def remove
-    element.remove
-  end
+    def remove
+      element.remove
+    end
 
-  def destroy
-    teardown_events
-    remove
+    def destroy
+      teardown_events
+      remove
+    end
   end
 end
 
