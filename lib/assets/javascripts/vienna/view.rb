@@ -29,7 +29,7 @@ module Vienna
 
       @element = create_element
       @element.add_class class_name
-      @element.setup_events
+      setup_events
 
       @element
     end
