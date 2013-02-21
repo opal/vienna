@@ -9,7 +9,7 @@ module Vienna
       elsif @template
         @template
       elsif name = self.name
-        @template.name.sub(/View$/, '').demodulize.underscore
+        @template = name.sub(/View$/, '').demodulize.underscore
       end
     end
 
@@ -28,4 +28,3 @@ module Vienna
     def after_render; end
   end
 end
-
