@@ -1,93 +1,93 @@
-require 'vienna/eventable'
-require 'vienna/columns'
-
 module Vienna
   class Model
-    include Eventable
-    include Columns
-    extend Eventable
-
     def self.inherited(base)
       base.reset!
     end
 
-    def self.reset!
-      @_models = []
+    def self.attributes(*attrs)
+      attrs.each do |name|
+        columns << name
+        attr_accessor name
+      end
     end
 
-    def self.create(attrs={})
-      model = self.new attrs
-      @_models << model
-      trigger :create, model
-      model
+    def self.column(attr_name)
+      columns << attr_name
+      attr_accessor attr_name
     end
 
-    def self.destroy(model)
-      @_models.delete model
-      trigger :destroy, self
+    def self.columns
+      @columns ||= []
     end
 
     def self.each(&block)
-      @_models.each { |m| block.call m }
+      @_id_map.each { |id, unit| block.call unit }
+    end
+
+    def self.find(id)
+      @_id_map[id]
+    end
+
+    def self.load(attributes)
+      model = self.new attributes
+      @_id_map[model.id] = model
+      model
+    end
+
+    def self.load_json(json)
+      load Hash.from_native(json)
+    end
+
+    def self.load_many(array)
+      array.map { |attrs| load attrs } 
+    end
+
+    def self.load_many_json(array)
+      array.map { |json| load_json json }
     end
 
     def self.primary_key
       :id
     end
 
-    def initialize(attributes={})
-      @attributes = {}
-      @cached_attributes = {}
+    def self.reset!
+      @_id_map = {}
+    end
+
+    def initialize(attrs={})
       @primary_key = self.class.primary_key
       @new_record = true
 
-      self.attributes = attributes
-      @attributes[@primary_key] = nil unless @attributes.key?(@primary_key)
+      self.attributes = attrs
     end
 
-    def [](name)
-      @attributes[name]
+    def as_json
+      json = {}
+
+      self.class.columns.each do |column|
+        json[column] = __send__(column).as_json
+      end
+
+      json
     end
 
-    def []=(name, value)
-      @attributes[name] = value
+    def to_json
+      as_json.to_json
     end
 
-    def attributes=(attributes)
-      attributes.each do |attr_name, value|
-        @attributes[attr_name] = value
+    def attributes=(attrs)
+      attrs.each do |name, value|
+        setter = "#{name}="
+        if respond_to? setter
+          __send__ setter, value
+        else
+          instance_variable_set "@#{name}", value
+        end
       end
     end
 
     def id
-      self[@primary_key]
-    end
-
-    def id=(value)
-      self[@primary_key] = value
-    end
-
-    def save
-      update
-      trigger :save
-    end
-
-    def update_attribute(name, value)
-      @attributes[name] = value
-      save
-    end
-
-    ##
-    # private methods..
-
-    def destroy
-      self.class.destroy self
-      trigger :destroy
-    end
-
-    def update
-      self.class.trigger :update, self
-      trigger :update
+      instance_variable_get "@#{@primary_key}"
     end
   end
 end
