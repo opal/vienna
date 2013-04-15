@@ -46,8 +46,8 @@ module Vienna
       array.map { |json| load_json json }
     end
 
-    def self.primary_key
-      :id
+    def self.primary_key(primary_key = nil)
+      primary_key ? @primary_key = primary_key : @primary_key ||= :id
     end
 
     def self.reset!
