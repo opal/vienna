@@ -20,6 +20,11 @@ module Vienna
       @columns ||= []
     end
 
+    # Return an array of all models
+    def self.all
+      @_id_map.values
+    end
+
     def self.each(&block)
       @_id_map.each { |id, unit| block.call unit }
     end

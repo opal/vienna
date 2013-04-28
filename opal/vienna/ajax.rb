@@ -77,10 +77,6 @@ module Vienna
           end
         end
       end
-
-      def all
-        @_id_map.values
-      end
     end
 
     def self.included(base)
