@@ -47,7 +47,11 @@ module Vienna
             loaded_model = load_json response.body
             loaded_model.instance_variable_set '@new_record', false
             model.class.trigger :ajax_success, response
-            model.class.trigger :create, loaded_model if method == 'POST'
+            if method == 'POST'
+              model.class.trigger :create, loaded_model
+            else
+              model.class.trigger :update, loaded_model
+            end
             model.class.trigger :change, all
           else
             model.class.trigger :ajax_error, response
