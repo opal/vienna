@@ -61,6 +61,26 @@ module Vienna
       self.attributes = attrs
     end
 
+    def [](column)
+      __send__(column)
+    end
+
+    def []=(column, value)
+      __send__("#{column}=", value)
+    end
+
+    def new?
+      !!@new_record
+    end
+
+    def save
+      self.class.update! self
+    end
+
+    def destroy
+      self.class.destroy! self
+    end
+
     def as_json
       json = {}
 
