@@ -1,5 +1,5 @@
 require 'vienna/view'
-require 'opal/template'
+require 'opal-template'
 
 module Vienna
   class TemplateView < View
