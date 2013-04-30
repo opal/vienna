@@ -5,10 +5,7 @@ module Vienna
     end
 
     def self.attributes(*attrs)
-      attrs.each do |name|
-        columns << name
-        attr_accessor name
-      end
+      attrs.each { |name| column name }
     end
 
     def self.column(attr_name)
