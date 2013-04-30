@@ -23,11 +23,12 @@ module Vienna
         HTTP.delete(url, options) do |response|
           if response.ok?
             @_id_map.delete(model.id)
-            model.class.trigger :ajax_success, response
-            model.class.trigger :destroy, self
-            model.class.trigger :change, all
+            trigger :ajax_success, response
+            trigger :destroy, model
+            model.trigger :destroy
+            trigger :change, all
           else
-            model.class.trigger :ajax_error, response
+            trigger :ajax_error, response
           end
         end
       end
@@ -46,15 +47,17 @@ module Vienna
           if response.ok?
             loaded_model = load_json response.body
             loaded_model.instance_variable_set '@new_record', false
-            model.class.trigger :ajax_success, response
+            trigger :ajax_success, response
             if method == 'POST'
-              model.class.trigger :create, loaded_model
+              trigger :create, loaded_model
+              model.trigger :create
             else
-              model.class.trigger :update, loaded_model
+              trigger :update, loaded_model
+              model.trigger :update
             end
-            model.class.trigger :change, all
+            trigger :change, all
           else
-            model.class.trigger :ajax_error, response
+            trigger :ajax_error, response
           end
         end
         HTTP.new(url, method, options, handler).send!

@@ -27,10 +27,13 @@ module Vienna
           @_models << model
 
           trigger :create, model
+          model.trigger :create
         else
           trigger :update, model
           model.trigger :update
         end
+
+        trigger :change, all
 
         sync_local!
       end
