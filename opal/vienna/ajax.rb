@@ -23,11 +23,12 @@ module Vienna
         HTTP.delete(url, options) do |response|
           if response.ok?
             @_id_map.delete(model.id)
-            model.class.trigger :ajax_success, response
-            model.class.trigger :destroy, self
-            model.class.trigger :change, all
+            trigger :ajax_success, response
+            trigger :destroy, model
+            model.trigger :destroy
+            trigger :change, all
           else
-            model.class.trigger :ajax_error, response
+            trigger :ajax_error, response
           end
         end
       end
