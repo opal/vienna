@@ -33,6 +33,8 @@ module Vienna
           model.trigger :update
         end
 
+        trigger :change, all
+
         sync_local!
       end
 
