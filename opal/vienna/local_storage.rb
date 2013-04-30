@@ -27,6 +27,7 @@ module Vienna
           @_models << model
 
           trigger :create, model
+          model.trigger :create
         else
           trigger :update, model
           model.trigger :update
