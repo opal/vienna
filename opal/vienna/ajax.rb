@@ -86,8 +86,6 @@ module Vienna
       base.extend ClassMethods
       # find method from Enumerable conflicts with Vienna::Model
       #base.extend Enumerable
-      base.include Vienna::Eventable
-      base.extend Vienna::Eventable
     end
   end
 end
