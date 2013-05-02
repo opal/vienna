@@ -1,5 +1,8 @@
 module Vienna
   class Model
+    include Eventable
+    extend Eventable
+
     def self.inherited(base)
       base.reset!
     end
