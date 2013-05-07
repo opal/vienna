@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.require_paths  = ['lib']
 
   s.add_dependency 'rake'
-  s.add_dependency 'opal', '~> 0.3.36'
-  s.add_dependency 'opal-jquery', '~> 0.0.5'
+  s.add_dependency 'opal', '>= 0.3.43'
+  s.add_dependency 'opal-jquery', '>= 0.0.8'
 
-  s.add_development_dependency 'opal-spec', '~> 0.2.10'
+  s.add_development_dependency 'opal-spec', '>= 0.2.15'
 end
