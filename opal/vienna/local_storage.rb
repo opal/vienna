@@ -1,4 +1,4 @@
-require 'opal/browser/local_storage'
+require 'opal-browser/local_storage'
 
 module Vienna
 
