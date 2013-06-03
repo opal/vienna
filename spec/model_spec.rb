@@ -38,5 +38,12 @@ describe Vienna::Model do
       model = SimpleModel.load(id: 8)
       SimpleModel[8].should eq(model)
     end
+
+    it "should update existing models" do
+      foo = SimpleModel.load(id: 9, name: 'Adam')
+      bar = SimpleModel.load(id: 9, name: 'Beynon')
+      foo.should equal(bar)
+      foo.name.should eq("Beynon")
+    end
   end
 end

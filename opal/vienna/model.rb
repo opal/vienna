@@ -28,9 +28,12 @@ module Vienna
     def self.load(attributes)
       raise ArgumentError, "no id (#{primary_key}) given" unless attributes[primary_key]
 
-      model = self.new attributes
-
-      identity_map[model.id] = model
+      if model = self[attributes[primary_key]]
+        model.attributes = attributes
+      else
+        model = self.new attributes
+        identity_map[model.id] = model
+      end
 
       model.instance_variable_set :@new_record, false
       model
@@ -68,7 +71,7 @@ module Vienna
     end
 
     def new_record?
-      !!@new_record
+      @new_record
     end
 
     def save
