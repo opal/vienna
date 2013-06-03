@@ -39,6 +39,10 @@ module Vienna
       model
     end
 
+    def self.load_json(json)
+      load Hash.from_native json
+    end
+
     def self.primary_key(primary_key = nil)
       primary_key ? @primary_key = primary_key : @primary_key ||= :id
     end

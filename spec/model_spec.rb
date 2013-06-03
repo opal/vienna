@@ -46,4 +46,13 @@ describe Vienna::Model do
       foo.name.should eq("Beynon")
     end
   end
+
+  describe ".load_json" do
+    it "should load a model from native json/js object" do
+      obj = `{"id": 13, "name": "Bob"}`
+      model = SimpleModel.load_json obj
+      model.id.should eq(13)
+      model.name.should eq("Bob")
+    end
+  end
 end
