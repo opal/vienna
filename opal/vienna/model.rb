@@ -74,14 +74,6 @@ module Vienna
       @new_record
     end
 
-    def save
-      self.class.update! self
-    end
-
-    def destroy
-      self.class.destroy! self
-    end
-
     def as_json
       json = {}
 
@@ -109,6 +101,22 @@ module Vienna
 
     def id
       instance_variable_get "@#{@primary_key}"
+    end
+
+    def save(&block)
+      @new_record ? create(&block) : update(&block)
+    end
+
+    def create(&block)
+      self.class.create!(self, &block)
+    end
+
+    def update(&block)
+      self.class.update!(self, &block)
+    end
+
+    def destroy(&block)
+      self.class.destroy!(self, &block)
     end
   end
 end
