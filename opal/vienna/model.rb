@@ -3,10 +3,6 @@ module Vienna
     include Eventable
     extend Eventable
 
-    def self.inherited(base)
-      base.reset!
-    end
-
     def self.attributes(*attrs)
       attrs.each { |name| attribute name }
     end
@@ -22,51 +18,38 @@ module Vienna
 
     # Return an array of all models
     def self.all
-      @_id_map.values
-    end
-
-    def self.each(&block)
-      all.each { |unit| block.call unit }
+      identity_map.values
     end
 
     def self.find(id)
-      @_id_map[id]
+      identity_map[id]
     end
 
     def self.load(attributes)
+      raise ArgumentError, "no id (#{primary_key}) given" unless attributes[primary_key]
+
       model = self.new attributes
-      @_id_map[model.id] = model
+
+      identity_map[model.id] = model
 
       model.instance_variable_set :@new_record, false
       model
-    end
-
-    def self.load_json(json)
-      load Hash.from_native(json)
-    end
-
-    def self.load_many(array)
-      array.map { |attrs| load attrs } 
-    end
-
-    def self.load_many_json(array)
-      array.map { |json| load_json json }
     end
 
     def self.primary_key(primary_key = nil)
       primary_key ? @primary_key = primary_key : @primary_key ||= :id
     end
 
-    def self.reset!
-      @_id_map = {}
+    def self.identity_map
+      @identity_map ||= {}
     end
 
     def self.[](id)
-      @_id_map[id]
+      identity_map[id]
     end
 
     def self.[]=(id, model)
-      @_id_map[id] = model
+      identity_map[id] = model
     end
 
     def initialize(attrs={})
