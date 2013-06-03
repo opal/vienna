@@ -43,6 +43,10 @@ module Vienna
       primary_key ? @primary_key = primary_key : @primary_key ||= :id
     end
 
+    primary_key :id
+
+    attr_accessor :id
+
     def self.identity_map
       @identity_map ||= {}
     end
@@ -56,9 +60,7 @@ module Vienna
     end
 
     def initialize(attrs={})
-      @primary_key = self.class.primary_key
       @new_record = true
-
       self.attributes = attrs
     end
 
@@ -97,10 +99,6 @@ module Vienna
           instance_variable_set "@#{name}", value
         end
       end
-    end
-
-    def id
-      instance_variable_get "@#{@primary_key}"
     end
 
     def save(&block)
