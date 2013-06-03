@@ -36,6 +36,8 @@ module Vienna
     def self.load(attributes)
       model = self.new attributes
       @_id_map[model.id] = model
+
+      model.instance_variable_set :@new_record, false
       model
     end
 
@@ -59,6 +61,14 @@ module Vienna
       @_id_map = {}
     end
 
+    def self.[](id)
+      @_id_map[id]
+    end
+
+    def self.[]=(id, model)
+      @_id_map[id] = model
+    end
+
     def initialize(attrs={})
       @primary_key = self.class.primary_key
       @new_record = true
@@ -74,7 +84,7 @@ module Vienna
       __send__("#{column}=", value)
     end
 
-    def new?
+    def new_record?
       !!@new_record
     end
 
