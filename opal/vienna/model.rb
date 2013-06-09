@@ -40,7 +40,7 @@ module Vienna
     end
 
     def self.load_json(json)
-      load Hash.from_native json
+      load Hash.new json
     end
 
     def self.primary_key(primary_key = nil)
