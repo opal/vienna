@@ -26,8 +26,13 @@ module Vienna
       identity_map.values
     end
 
-    def self.find(id)
-      identity_map[id]
+    def self.find(id, &block)
+      if record = identity_map[id]
+        return record
+      end
+
+      record = self.new
+      self.adapter.find(record, id, &block)
     end
 
     def self.load(attributes)
@@ -115,15 +120,15 @@ module Vienna
     end
 
     def create(&block)
-      self.class.create!(self, &block)
+      self.class.adapter.create_record(self, &block)
     end
 
     def update(&block)
-      self.class.update!(self, &block)
+      self.class.adapter.update_record(self, &block)
     end
 
     def destroy(&block)
-      self.class.destroy!(self, &block)
+      self.class.adapter.delete_record(self, &block)
     end
   end
 end

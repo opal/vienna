@@ -13,23 +13,23 @@ module Vienna
   class Adapter
 
     def find(record, id, &block)
-
+      implement "find"
     end
 
     def load(record, id, &block)
-
+      implement "load"
     end
 
     def create_record(record)
-
+      implement "create_record"
     end
 
     def save_record(record)
-
+      implement "save_record"
     end
 
     def delete_record(record)
-
+      implement "delete_record"
     end
 
     def implement(method)
