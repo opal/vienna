@@ -55,4 +55,24 @@ describe Vienna::Model do
       model.name.should eq("Bob")
     end
   end
+
+  describe ".adapter" do
+    it "sets a new instance of the passed adapter as @adapter" do
+      klass = Class.new(Vienna::Model) do
+        adapter Vienna::Adapter
+      end
+
+      klass.instance_variable_get(:@adapter).should be_kind_of(Vienna::Adapter)
+    end
+
+    it "returns the adapter set on the model subclass" do
+      klass = Class.new(Vienna::Model) { adapter Vienna::Adapter }
+      klass.adapter.should be_kind_of(Vienna::Adapter)
+    end
+
+    it "raises an error when no adapter set on model subclass" do
+      klass = Class.new(Vienna::Model)
+      lambda { klass.adapter }.should raise_error(Exception)
+    end
+  end
 end

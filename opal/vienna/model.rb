@@ -16,6 +16,11 @@ module Vienna
       @columns ||= []
     end
 
+    def self.adapter(klass = nil)
+      return @adapter = klass.new if klass
+      @adapter ||= raise("No adapter for #{self}")
+    end
+
     # Return an array of all models
     def self.all
       identity_map.values
