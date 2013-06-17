@@ -2,7 +2,7 @@ require 'opal-browser/local_storage'
 
 module Vienna
 
-  # Mixin for saving/getting models from LocalStorage
+  # This is now deprecated, use LocalAdapter instead
   module LocalStorage
 
     module ClassMethods

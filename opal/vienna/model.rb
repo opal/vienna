@@ -36,7 +36,9 @@ module Vienna
     end
 
     def self.load(attributes)
-      raise ArgumentError, "no id (#{primary_key}) given" unless attributes[primary_key]
+      unless attributes[primary_key]
+        raise ArgumentError, "no id (#{primary_key}) given"
+      end
 
       if model = self[attributes[primary_key]]
         model.attributes = attributes
@@ -46,11 +48,20 @@ module Vienna
       end
 
       model.instance_variable_set :@new_record, false
+
+      model.trigger_events(:load)
+
       model
     end
 
     def self.load_json(json)
       load Hash.new json
+    end
+
+    def self.create(attrs = {})
+      model = self.new(attrs)
+      model.save
+      model
     end
 
     def self.primary_key(primary_key = nil)
@@ -97,6 +108,8 @@ module Vienna
         json[column] = __send__(column).as_json
       end
 
+      json[:id] = self.id if self.id
+
       json
     end
 
@@ -123,12 +136,18 @@ module Vienna
       self.class.adapter.create_record(self, &block)
     end
 
-    def update(&block)
+    def update(attributes = nil, &block)
+      self.attributes = attributes if attributes
       self.class.adapter.update_record(self, &block)
     end
 
     def destroy(&block)
       self.class.adapter.delete_record(self, &block)
+    end
+
+    def trigger_events(name)
+      self.class.trigger(name, self)
+      self.trigger(name)
     end
   end
 end

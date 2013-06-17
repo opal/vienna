@@ -24,6 +24,10 @@ module Vienna
       implement "create_record"
     end
 
+    def update_record(record)
+      implement "update_record"
+    end
+
     def save_record(record)
       implement "save_record"
     end

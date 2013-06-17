@@ -1,6 +1,6 @@
 module Vienna
 
-  # A simple module include that allows AJAX CRUD operations in Vienna::Model
+  # This is now deprecated, a replacement is in progress
   module Ajax
 
     module ClassMethods
