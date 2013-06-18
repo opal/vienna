@@ -45,7 +45,7 @@ module Vienna
     # `#tag_name` method.
     #
     # ## Example: A subview that is created from a parent element
-    # 
+    #
     #     class NavigationView < Vienna::View
     #       def initialize(parent, selector)
     #         @parent, @selector = parent, selector
@@ -72,7 +72,7 @@ module Vienna
     #
     #     nav_view.element
     #     # => [<ul class="navigation">]
-    # 
+    #
     # @return [Element] Should return the element for this view
     def create_element
       if el = self.class.element

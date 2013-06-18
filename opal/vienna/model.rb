@@ -9,7 +9,13 @@ module Vienna
 
     def self.attribute attr_name
       columns << attr_name
-      attr_accessor attr_name
+      attr_reader attr_name
+
+      define_method("#{attr_name}=") do |val|
+        val = instance_variable_set("@#{attr_name}", val)
+        trigger("change_#{attr_name}", self, val)
+        val
+      end
     end
 
     def self.columns
