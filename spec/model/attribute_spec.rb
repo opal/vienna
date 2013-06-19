@@ -33,21 +33,5 @@ describe Vienna::Model do
         model.first_name.should eq("Bill")
       end
     end
-
-    it "should fire a change_<attr_name> event when calling writer" do
-      called = false
-      model.on(:change_first_name) { called = true }
-
-      model.first_name = "Adam"
-      called.should be_true
-    end
-
-    it "should pass the model instance and new value to event" do
-      args = nil
-      model.on(:change_first_name) { |*a| args = a }
-
-      model.first_name = "Tim"
-      args.should eq([model, "Tim"])
-    end
   end
 end

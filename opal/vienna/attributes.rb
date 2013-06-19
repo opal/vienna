@@ -15,8 +15,6 @@ module Vienna
 
         define_method("#{attr_name}=") do |val|
           @attributes[attr_name] = val
-          trigger("change_#{attr_name}", self, val)
-          val
         end
       end
 
