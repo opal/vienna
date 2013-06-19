@@ -158,6 +158,32 @@ module Vienna
       self.class.trigger(name, self)
       self.trigger(name)
     end
+
+    # Should be considered a private method. This is called by an adapter when
+    # this record gets deleted/destroyed. This method is then responsible from
+    # remoing this record instance from the class' identity_map, and triggering
+    # a `:destroy` event. If you override this method, you *must* call super,
+    # otherwise undefined bad things will happen.
+    def did_destroy
+      self.class.identity_map.delete self.id
+      trigger_events(:destroy)
+    end
+
+    # A private method. This is called by the adapter once this record has been
+    # created in the backend.
+    def did_create
+      @new_record = false
+      self.class.identity_map[self.id] = self
+
+      trigger_events(:create)
+    end
+
+    # A private method. This is called by the adapter when this record has been
+    # updated in the adapter. It should not be called directly. It may be
+    # overriden, aslong as `super()` is called.
+    def did_update
+      trigger_events(:update)
+    end
   end
 end
 
