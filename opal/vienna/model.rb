@@ -100,12 +100,12 @@ module Vienna
       self.attributes = attributes if attributes
     end
 
-    def [](column)
-      __send__(column)
+    def [](attr_name)
+      @attributes[attr_name]
     end
 
-    def []=(column, value)
-      __send__("#{column}=", value)
+    def []=(attr_name, value)
+      @attributes[attr_name] = value
     end
 
     def new_record?
