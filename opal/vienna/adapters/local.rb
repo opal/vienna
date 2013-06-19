@@ -7,24 +7,25 @@ module Vienna
   class LocalAdapter < Adapter
 
     def create_record(record, &block)
-      record.instance_variable_set(:@new_record, false)
+      record.id = self.unique_id
 
-      id = unique_id
-      record.id = id
-      record.class.identity_map[id] = record
-
+      record.did_create
       sync_models(record.class)
 
-      record.trigger_events(:create)
+      block.call(record) if block
     end
 
     def update_record(record, &block)
+      record.did_update
       sync_models(record.class)
-      record.trigger_events(:update)
+
+      block.call(record) if block
     end
 
     def delete_record(record, &block)
-      record.trigger_events(:destroy)
+      record.did_destroy
+      sync_models record.class
+      block.call(record) if block
     end
 
     def find_all(klass, &block)
