@@ -113,11 +113,7 @@ module Vienna
     end
 
     def as_json
-      json = {}
-
-      self.class.columns.each do |column|
-        json[column] = __send__(column).as_json
-      end
+      json = @attributes.clone
 
       json[:id] = self.id if self.id
 
