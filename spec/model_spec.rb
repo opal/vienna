@@ -34,9 +34,9 @@ describe Vienna::Model do
     end
 
     it "should cache model" do
-      SimpleModel[8].should be_nil
+      SimpleModel.identity_map[8].should be_nil
       model = SimpleModel.load(id: 8)
-      SimpleModel[8].should eq(model)
+      SimpleModel.identity_map[8].should eq(model)
     end
 
     it "should update existing models" do

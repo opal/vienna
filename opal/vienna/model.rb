@@ -49,11 +49,13 @@ module Vienna
         raise ArgumentError, "no id (#{primary_key}) given"
       end
 
-      if model = self[attributes[primary_key]]
+      map = identity_map
+
+      if model = map[attributes[primary_key]]
         model.attributes = attributes
       else
         model = self.new attributes
-        identity_map[model.id] = model
+        map[model.id] = model
       end
 
       model.instance_variable_set :@new_record, false
@@ -85,14 +87,6 @@ module Vienna
       @identity_map ||= {}
     end
 
-    def self.[](id)
-      identity_map[id]
-    end
-
-    def self.[]=(id, model)
-      identity_map[id] = model
-    end
-
     def initialize(attributes = nil)
       @new_record = true
       @attributes = {}
@@ -114,9 +108,7 @@ module Vienna
 
     def as_json
       json = @attributes.clone
-
       json[:id] = self.id if self.id
-
       json
     end
 
@@ -158,3 +150,4 @@ module Vienna
     end
   end
 end
+
