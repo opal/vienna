@@ -45,20 +45,18 @@ module Vienna
     end
 
     def self.load(attributes)
-      unless attributes[primary_key]
+      unless id = attributes[primary_key]
         raise ArgumentError, "no id (#{primary_key}) given"
       end
 
       map = identity_map
-
-      if model = map[attributes[primary_key]]
-        model.attributes = attributes
-      else
-        model = self.new attributes
-        map[model.id] = model
+      unless model = map[id]
+        model = self.new
+        model.id = id
+        map[id] = model
       end
 
-      model.instance_variable_set :@new_record, false
+      model.load(attributes)
 
       model.trigger_events(:load)
 
@@ -88,8 +86,9 @@ module Vienna
     end
 
     def initialize(attributes = nil)
-      @new_record = true
       @attributes = {}
+      @new_record = true
+      @loaded     = false
 
       self.attributes = attributes if attributes
     end
@@ -104,6 +103,17 @@ module Vienna
 
     def new_record?
       @new_record
+    end
+
+    def loaded?
+      @loaded
+    end
+
+    def load(attributes = nil)
+      @loaded = true
+      @new_record = false
+
+      self.attributes = attributes if attributes
     end
 
     def as_json

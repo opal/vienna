@@ -35,5 +35,12 @@ describe Vienna::Model do
       model.instance_variable_get(:@attributes).should eq({})
     end
 
+    it "marks the model as being a new record" do
+      ModelInitializeSpec.new.new_record?.should be_true
+    end
+
+    it "marks the model as not being loaded" do
+      ModelInitializeSpec.new.loaded?.should be_false
+    end
   end
 end
