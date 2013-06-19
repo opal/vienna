@@ -30,5 +30,10 @@ describe Vienna::Model do
       model.baz.should eq(42)
     end
 
+    it "creates @attributes as an empty hash" do
+      model = ModelInitializeSpec.new
+      model.instance_variable_get(:@attributes).should eq({})
+    end
+
   end
 end

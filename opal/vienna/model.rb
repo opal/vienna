@@ -9,10 +9,13 @@ module Vienna
 
     def self.attribute attr_name
       columns << attr_name
-      attr_reader attr_name
+
+      define_method(attr_name) do
+        @attributes[attr_name]
+      end
 
       define_method("#{attr_name}=") do |val|
-        val = instance_variable_set("@#{attr_name}", val)
+        @attributes[attr_name] = val
         trigger("change_#{attr_name}", self, val)
         val
       end
@@ -90,9 +93,11 @@ module Vienna
       identity_map[id] = model
     end
 
-    def initialize(attrs={})
+    def initialize(attributes = nil)
       @new_record = true
-      self.attributes = attrs
+      @attributes = {}
+
+      self.attributes = attributes if attributes
     end
 
     def [](column)
