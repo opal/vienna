@@ -93,4 +93,29 @@ describe Vienna::Observable do
       result.should eq(3.142)
     end
   end
+
+  describe "#unobserve" do
+    it "has no effect when no observers setup for attribute" do
+      object.unobserve(:foo, proc {})
+    end
+
+    it "has no effect if the handler doesnt exist for attribute" do
+      p = proc {}
+      object.observe(:foo) {}
+      object.unobserve(:foo, p)
+    end
+
+    it "removes an existing handler for given attribute" do
+      count = 0
+      handler = proc { count += 1 }
+      object.observe(:foo, &handler)
+
+      object.foo = 42
+      count.should eq(1)
+
+      object.unobserve(:foo, handler)
+      object.foo = 49
+      count.should eq(1)
+    end
+  end
 end

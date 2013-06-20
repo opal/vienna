@@ -15,13 +15,11 @@ module Vienna
       handlers << handler
     end
 
-    def replace_writer_for(attribute)
-      if respond_to? "#{attribute}="
-        define_singleton_method("#{attribute}=") do |val|
-          result = super val
-          attribute_did_change(attribute)
-          result
-        end
+    def unobserve(attribute, handler)
+      return unless @attr_observers
+
+      if handlers = @attr_observers[attribute]
+        handlers.delete handler
       end
     end
 
@@ -34,6 +32,17 @@ module Vienna
       if handlers = @attr_observers[attribute]
         new_val = __send__(attribute) if respond_to?(attribute)
         handlers.each { |h| h.call new_val }
+      end
+    end
+
+    # private?
+    def replace_writer_for(attribute)
+      if respond_to? "#{attribute}="
+        define_singleton_method("#{attribute}=") do |val|
+          result = super val
+          attribute_did_change(attribute)
+          result
+        end
       end
     end
   end
