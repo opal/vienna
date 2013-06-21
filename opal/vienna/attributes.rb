@@ -26,11 +26,11 @@ module Vienna
     end
 
     def [](attribute)
-      __send__(attribute)
+      instance_variable_get "@#{attribute}"
     end
 
     def []=(attribute, value)
-      __send__("#{attribute}=", value)
+      instance_variable_set "@#{attribute}", value
     end
 
     def attributes=(attributes)
