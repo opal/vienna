@@ -9,13 +9,7 @@ module Vienna
       def attribute(attr_name)
         columns << attr_name
 
-        define_method(attr_name) do
-          @attributes[attr_name]
-        end
-
-        define_method("#{attr_name}=") do |val|
-          @attributes[attr_name] = val
-        end
+        attr_accessor attr_name
       end
 
       def columns
@@ -32,11 +26,11 @@ module Vienna
     end
 
     def [](attribute)
-      @attributes[attribute]
+      __send__(attribute)
     end
 
     def []=(attribute, value)
-      @attributes[attribute] = value
+      __send__("#{attribute}=", value)
     end
 
     def attributes=(attributes)

@@ -23,8 +23,10 @@ module Vienna
     end
 
     def as_json
-      json = @attributes.clone
+      json = {}
       json[:id] = self.id if self.id
+
+      self.class.columns.each { |name| json[name] = __send__(name) }
       json
     end
 

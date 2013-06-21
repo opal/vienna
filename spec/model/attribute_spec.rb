@@ -19,18 +19,9 @@ describe Vienna::Model do
     end
 
     describe "writer" do
-      it "sets value on internal @attributes hash" do
+      it "sets value on model" do
         model.first_name = "Tommy"
-        attributes[:first_name].should eq("Tommy")
-      end
-    end
-
-    describe "reader" do
-      it "retrieves the value from internal @attributes hash" do
-        attributes[:first_name] = "Bob"
-        model.first_name.should eq("Bob")
-        attributes[:first_name] = "Bill"
-        model.first_name.should eq("Bill")
+        model.first_name.should eq("Tommy")
       end
     end
   end
