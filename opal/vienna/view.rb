@@ -13,6 +13,9 @@ module Vienna
       events << [name, selector, handler]
     end
 
+    # Parent view
+    attr_accessor :parent
+
     # Returns the element for this view. This is created lazily on the first
     # time the method is called. It is not recommended to override this
     # method. Instead, override `#create_element` to simply return the element
@@ -75,10 +78,12 @@ module Vienna
     #
     # @return [Element] Should return the element for this view
     def create_element
+      scope = (self.parent ? parent.element : Element)
+
       if el = self.class.element
-        Element.find el
+        scope.find el
       else
-        Element.new tag_name
+        scope.new tag_name
       end
     end
 
