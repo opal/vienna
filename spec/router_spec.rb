@@ -71,6 +71,19 @@ describe Vienna::Router do
       router.match('/eek')
       out.should eq([:foo, :bar])
     end
+
+    it "works with / too" do
+      out = []
+      router.route('/') { out << :index }
+
+      $global.location.hash = ""
+      router.update
+
+      $global.location.hash = "#/"
+      router.update
+
+      out.should == [:index, :index]
+    end
   end
 
   describe "#navigate" do

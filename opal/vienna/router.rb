@@ -18,7 +18,11 @@ module Vienna
     end
 
     def update
-      @path = @location.hash.sub(/^#*/, '')
+      @path = if @location.hash.empty?
+        "/"
+      else
+        @location.hash.sub(/^#*/, '')
+      end
 
       match @path
     end
