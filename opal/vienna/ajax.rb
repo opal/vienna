@@ -1,8 +1,6 @@
 module Vienna
-
   # This is now deprecated, a replacement is in progress
   module Ajax
-
     module ClassMethods
       def url(url = nil)
         url ? @_url = url : @_url

@@ -1,5 +1,4 @@
 module Vienna
-
   class << self
     attr_accessor :adapter
   end
@@ -11,7 +10,6 @@ module Vienna
   # and LocalAdapter. A fixtures adapter is also provided for testing
   # purposes.
   class Adapter
-
     def find(record, id, &block)
       implement "find"
     end

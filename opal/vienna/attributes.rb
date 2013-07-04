@@ -1,6 +1,5 @@
 module Vienna
   module Attributes
-
     module ClassMethods
       def attributes(*attributes)
         attributes.each { |name| attribute name }

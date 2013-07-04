@@ -1,9 +1,7 @@
 module Vienna
-
   # A simple event registering/triggering module to mix into classes.
   # Events are stored in the `@events` ivar.
   module Eventable
-
     # Register a handler for the given event name.
     #
     #   obj.on(:foo) { puts "foo was called" }

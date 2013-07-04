@@ -1,12 +1,9 @@
 require 'opal-browser/local_storage'
 
 module Vienna
-
   # This is now deprecated, use LocalAdapter instead
   module LocalStorage
-
     module ClassMethods
-
       def destroy! model
         unless model.new?
           @_models.delete model

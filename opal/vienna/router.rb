@@ -11,7 +11,7 @@ module Vienna
       instance_eval(&block) if block
     end
 
-    def route path, &handler
+    def route(path, &handler)
       route = Route.new(path, &handler)
       @routes << route
       route
@@ -23,18 +23,17 @@ module Vienna
       match @path
     end
 
-    def match path
+    def match(path)
       @routes.find { |r| r.match path }
     end
 
     # Navigate to the given hash location. This adds the '#' 
     # fragment to the start of the path
-    def navigate path
+    def navigate(path)
       @location.hash = "##{path}"
     end
 
     class Route
-
       # Regexp for matching named params in path
       NAMED = /:(\w+)/
 
@@ -43,7 +42,7 @@ module Vienna
 
       attr_reader :regexp, :named
 
-      def initialize pattern, &handler
+      def initialize(pattern, &handler)
         @named, @handler = [], handler
 
         pattern = Regexp.escape pattern
@@ -59,7 +58,7 @@ module Vienna
 
       # Return a hash of all named parts to values if route matches path, or
       # nil otherwise
-      def match path
+      def match(path)
         if match = @regexp.match(path)
           params = {}
           @named.each_with_index { |name, i| params[name] = match[i + 1] }

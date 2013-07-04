@@ -2,10 +2,8 @@ require 'vienna/adapter'
 require 'opal-browser/local_storage'
 
 module Vienna
-
   # Adapter using LocalStorage as a backend
   class LocalAdapter < Adapter
-
     def create_record(record, &block)
       record.id = self.unique_id
 

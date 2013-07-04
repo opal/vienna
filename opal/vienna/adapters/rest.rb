@@ -9,10 +9,8 @@ module Vienna
 end
 
 module Vienna
-
   # Adapter for a REST backend
   class RESTAdapter < Adapter
-
     def delete_record(record, &block)
       options = { dataType: "json" }
       url = record_url(record)

@@ -1,8 +1,6 @@
 module Vienna
   module Persistence
-
     module ClassMethods
-
       def adapter(klass = nil)
         return @adapter = klass.new if klass
         @adapter || raise("No adapter for #{self}")
