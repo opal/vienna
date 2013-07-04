@@ -2,11 +2,13 @@ module Vienna
   class Router
     attr_reader :path, :routes
 
-    def initialize
+    def initialize(&block)
       @routes = []
       @location = $global.location
 
       $global.addEventListener 'hashchange', -> { update }, false
+
+      instance_eval(&block) if block
     end
 
     def route path, &handler
