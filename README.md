@@ -81,6 +81,24 @@ end
 Views can have parents. If a child view is created, then the dom selector is
 only searched inside the parents element.
 
+### Customizing elements
+
+A `View` will render as a div tag, by default, with no classes (unless an
+element selector is defined). Both these can be overriden inside your view
+subclass.
+
+```ruby
+class NavigationView < Vienna::View
+  def tag_name
+    :ul
+  end
+
+  def class_name
+    "navbar navbar-blue"
+  end
+end
+```
+
 ### Rendering views
 
 Views have a placeholder `render` method, that doesnt do anything by default.
@@ -100,7 +118,42 @@ view.element
 # => '<div>Welcome to my rubyicious page</div>'
 ```
 
-### Customizing elements
+### Listening for events
+
+When an element is created, defined events can be added to it. When a view is
+destroyed, these event handlers are then removed.
+
+```ruby
+class ButtonView < Vienna::View
+  on :click do |evt|
+    puts "clicked on button"
+  end
+
+  def tag_name
+    :button
+  end
+end
+```
+
+For complex views, you can provide an optional css selector to scope the events:
+
+```ruby
+class NavigationView < Vienna::View
+  on :click, 'ul.navbar li' do |evt|
+    puts "clicked: #{evt.target}"
+  end
+
+  on :mouseover, 'ul.navbar li.selected', :handle_mouseover
+
+  def handle_mouseover(evt)
+    # ...
+  end
+end
+```
+
+As you can see, you can specify a method to handle events instead of a block.
+
+### Customizing element creation
 
 You can also override `create_element` if you wish to have any custom element
 creation behaviour.

@@ -15,17 +15,6 @@ module Vienna
 
     attr_accessor :parent
 
-    # Returns the element for this view. This is created lazily on the first
-    # time the method is called. It is not recommended to override this
-    # method. Instead, override `#create_element` to simply return the element
-    # representing this view.
-    #
-    # Once the element is created, registered events will also be added to the
-    # created element. Also, any classes listed in the `#class_name` method will
-    # be added to the created element. Class names are added to any existing
-    # class names, so classes on an existing element will not be replaced.
-    #
-    # @return [Element] the element representing this view
     def element
       return @element if @element
 
@@ -48,17 +37,10 @@ module Vienna
 
     def render; end
 
-    # The class name that should be set on the element, once created.
-    #
-    # @return [String] class name to set on the element
     def class_name
       ""
     end
 
-    # When the element is created, the tag name can be overriden using this
-    # method. It defaults to a div element.
-    #
-    # @return [Symbol] tag name for the element
     def tag_name
       :div
     end
