@@ -1,6 +1,6 @@
 require 'vienna/eventable'
 require 'vienna/model'
-require 'vienna/adapter'
+require 'vienna/adapters/base'
 require 'vienna/view'
 require 'vienna/ajax'
 require 'vienna/router'
