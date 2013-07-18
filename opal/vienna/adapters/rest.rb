@@ -62,6 +62,11 @@ module Vienna
       block.call(record) if block
     end
 
+    def find(record, id)
+      # TODO remote fetch
+      nil
+    end
+
     def record_url(record)
       return record.to_url if record.respond_to? :to_url
 
