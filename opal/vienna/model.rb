@@ -22,6 +22,15 @@ module Vienna
       self.attributes = attributes if attributes
     end
 
+    def self.from_form(form)
+      attrs = {}
+      `#{form}.serializeArray()`.each do |field|
+        key, val = `field.name`, `field.value`
+        attrs[key] = val
+      end
+      new attrs
+    end
+
     def as_json
       json = {}
       json[:id] = self.id if self.id

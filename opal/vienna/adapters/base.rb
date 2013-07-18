@@ -34,6 +34,10 @@ module Vienna
       implement "delete_record"
     end
 
+    def fetch
+      implement "fetch"
+    end
+
     def implement(method)
       raise NoMethodError, "Adapter subclass should implement `#{method}'"
     end

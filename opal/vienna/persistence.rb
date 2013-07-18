@@ -52,6 +52,10 @@ module Vienna
         model.save
         model
       end
+
+      def fetch(options = {}, &block)
+        self.adapter.fetch(self, options, &block)
+      end
     end
 
     def self.included(klass)
