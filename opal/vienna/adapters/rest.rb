@@ -28,6 +28,23 @@ module Vienna
       block.call(record) if block
     end
 
+    def update_record(record, &block)
+      url = record_url(record)
+      options = { dataType: "json", payload: model.as_json }
+      HTTP.put(url, options) do |response|
+        if response.ok?
+          loaded_model = record.class.load_json response.body
+          record.class.trigger :ajax_success, response
+          record.did_update
+          record.class.trigger :change, record.class.all
+        else
+          record.trigger_events :ajax_error, response
+        end
+      end
+      
+      block.call(record) if block
+    end
+
     def delete_record(record, &block)
       options = { dataType: "json" }
       url = record_url(record)
