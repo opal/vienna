@@ -1,5 +1,3 @@
-require 'vienna/adapter'
-
 module Vienna
   class Model
     def self.url(url = nil)
