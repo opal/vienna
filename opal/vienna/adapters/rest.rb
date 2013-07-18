@@ -2,7 +2,7 @@ require 'vienna/adapter'
 
 module Vienna
   class Model
-    def url(url = nil)
+    def self.url(url = nil)
       url ? @url = url : @url
     end
   end
