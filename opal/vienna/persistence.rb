@@ -52,6 +52,10 @@ module Vienna
         model.save
         model
       end
+
+      def fetch(options = {}, &block)
+        self.adapter.fetch(self, options, &block)
+      end
     end
 
     def self.included(klass)
@@ -88,10 +92,6 @@ module Vienna
 
     def destroy(&block)
       self.class.adapter.delete_record(self, &block)
-    end
-
-    def fetch(options = {}, &block)
-      self.adapter.fetch(self, options, &block)
     end
 
     # Should be considered a private method. This is called by an adapter when
