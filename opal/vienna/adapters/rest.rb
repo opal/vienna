@@ -17,16 +17,15 @@ module Vienna
 
       HTTP.delete(url, options) do |response|
         if response.ok?
-          record.class.identity_map.delete(record.id)
-          record.trigger(:ajax_success, response)
-          # delete from local
-          record.trigger_events(:destroy)
-          # trigger :change?
+          record.did_destroy
+          record.class.trigger :ajax_success, response
+          record.class.trigger :change, record.class.all
         else
-          # ajax_error?
-          record.trigger_events(:error)
+          record.class.trigger :ajax_error, response
         end
       end
+
+      block.call(record) if block
     end
 
     def record_url(record)
