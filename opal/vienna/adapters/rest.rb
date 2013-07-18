@@ -67,8 +67,27 @@ module Vienna
       nil
     end
 
+    def fetch(model, options = {}, &block)
+      id = options.fetch(:id, nil)
+      params = options.fetch(:params, nil)
+      url = record_url(model)
+      options = { dataType: "json", data: params }.merge(options)
+      HTTP.get(url, options) do |response|
+        if response.ok?
+          response.body.map { |json| model.load_json json }
+          model.trigger :ajax_success, response
+          model.trigger :refresh, model.all
+        else
+          model.trigger :ajax_error, response
+        end
+      end
+
+      block.call(record) if block
+    end
+
     def record_url(record)
       return record.to_url if record.respond_to? :to_url
+      return record.url if record.respond_to? :url
 
       if klass_url = record.class.url
         return "#{klass_url}/#{record.id}"

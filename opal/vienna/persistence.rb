@@ -90,6 +90,10 @@ module Vienna
       self.class.adapter.delete_record(self, &block)
     end
 
+    def fetch(options = {}, &block)
+      self.adapter.fetch(self, options, &block)
+    end
+
     # Should be considered a private method. This is called by an adapter when
     # this record gets deleted/destroyed. This method is then responsible from
     # remoing this record instance from the class' identity_map, and triggering
