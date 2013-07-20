@@ -68,7 +68,7 @@ module Vienna
     def fetch(model, options = {}, &block)
       id = options.fetch(:id, nil)
       params = options.fetch(:params, nil)
-      url = record_url(model)
+      url = id ? "#{record_url(model)}/#{id}" : record_url(model)
       options = { dataType: "json", data: params }.merge(options)
       HTTP.get(url, options) do |response|
         if response.ok?
