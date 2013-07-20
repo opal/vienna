@@ -80,7 +80,7 @@ module Vienna
         end
       end
 
-      block.call(record) if block
+      block.call(model.all) if block
     end
 
     def record_url(record)
