@@ -14,7 +14,7 @@ module Vienna
       options = { dataType: "json", payload: record.as_json }
       HTTP.post(url, options) do |response|
         if response.ok?
-          record.class.load_json response.body
+          record.load Hash.new(response.body)
           record.class.trigger :ajax_success, response
           record.did_create
           record.class.trigger :change, record.class.all
