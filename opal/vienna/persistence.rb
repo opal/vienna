@@ -54,7 +54,12 @@ module Vienna
       end
 
       def fetch(options = {}, &block)
+        self.reset!
         self.adapter.fetch(self, options, &block)
+      end
+
+      def reset!
+        @identity_map = {}
       end
     end
 

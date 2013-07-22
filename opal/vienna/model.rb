@@ -28,7 +28,11 @@ module Vienna
         key, val = `field.name`, `field.value`
         attrs[key] = val
       end
-      new attrs
+      model = new attrs
+      if attrs.has_key?(self.primary_key) and ! attrs[self.primary_key].empty?
+        model.instance_variable_set('@new_record', false) 
+      end
+      model
     end
 
     def as_json
