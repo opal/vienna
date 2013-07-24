@@ -14,9 +14,9 @@ module Vienna
       options = { dataType: "json", payload: record.as_json }
       HTTP.post(url, options) do |response|
         if response.ok?
-          loaded_model = record.class.load_json response.body
+          record.load Hash.new(response.body)
           record.class.trigger :ajax_success, response
-          record.did_update
+          record.did_create
           record.class.trigger :change, record.class.all
         else
           record.trigger_events :ajax_error, response
@@ -28,10 +28,10 @@ module Vienna
 
     def update_record(record, &block)
       url = record_url(record)
-      options = { dataType: "json", payload: model.as_json }
+      options = { dataType: "json", payload: record.as_json }
       HTTP.put(url, options) do |response|
         if response.ok?
-          loaded_model = record.class.load_json response.body
+          record.class.load_json response.body
           record.class.trigger :ajax_success, response
           record.did_update
           record.class.trigger :change, record.class.all
@@ -68,7 +68,7 @@ module Vienna
     def fetch(model, options = {}, &block)
       id = options.fetch(:id, nil)
       params = options.fetch(:params, nil)
-      url = record_url(model)
+      url = id ? "#{record_url(model)}/#{id}" : record_url(model)
       options = { dataType: "json", data: params }.merge(options)
       HTTP.get(url, options) do |response|
         if response.ok?
@@ -80,7 +80,7 @@ module Vienna
         end
       end
 
-      block.call(record) if block
+      block.call(model.all) if block
     end
 
     def record_url(record)
