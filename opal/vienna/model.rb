@@ -51,6 +51,12 @@ module Vienna
       self.class.trigger(name, self)
       self.trigger(name)
     end
+
+    def inspect
+      "#<#{self.class.name}: #{self.class.columns.map { |name|
+        "#{name}=#{__send__(name).inspect}"
+      }.join(" ")}>"
+    end
   end
 end
 
