@@ -2,6 +2,7 @@ require 'vendor/jquery'
 require 'opal-spec'
 require 'opal-jquery'
 require 'vienna'
+require 'vienna/template_view'
 
 class SimpleModel < Vienna::Model
   attribute :name
