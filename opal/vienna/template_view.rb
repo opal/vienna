@@ -1,5 +1,6 @@
+require 'template'
 require 'vienna/view'
-require 'erb'
+require 'vienna/output_buffer'
 
 module Vienna
   class TemplateView < View
@@ -17,10 +18,15 @@ module Vienna
       before_render
 
       if template = Template[self.class.template]
-        element.html = template.render self
+        element.html = _render_template(template)
       end
 
       after_render
+    end
+
+    def _render_template(template)
+      @output_buffer = OutputBuffer.new
+      instance_exec @output_buffer, &template.body
     end
 
     def before_render; end
