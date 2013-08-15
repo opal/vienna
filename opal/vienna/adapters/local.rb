@@ -1,4 +1,4 @@
-require 'vienna/adapter'
+require 'vienna/adapters/base'
 require 'opal-browser/local_storage'
 
 module Vienna
