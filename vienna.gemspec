@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'opal', '>= 0.4.3'
   s.add_dependency 'opal-jquery', '>= 0.0.12'
+  s.add_dependency 'opal-activesupport', '>= 0.0.4'
 
   s.add_development_dependency 'opal-spec'
   s.add_development_dependency 'rake'

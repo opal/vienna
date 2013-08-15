@@ -1,6 +1,7 @@
 require 'template'
 require 'vienna/view'
 require 'vienna/output_buffer'
+require 'active_support/core_ext/string'
 
 module Vienna
   class TemplateView < View
