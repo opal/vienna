@@ -69,8 +69,10 @@ module Vienna
     end
 
     def load(attributes = nil)
+      @loaded, @new_record = true, false
       self.attributes = attributes if attributes
-      did_load
+
+      trigger_events :load
     end
 
     def new_record?
@@ -123,14 +125,6 @@ module Vienna
     # overriden, aslong as `super()` is called.
     def did_update
       trigger_events(:update)
-    end
-
-    # Called when this model gets loaded
-    def did_load
-      @loaded = true
-      @new_record = false
-
-      trigger_events(:load)
     end
   end
 end
