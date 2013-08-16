@@ -12,7 +12,7 @@ module Vienna
 
       # Return a simple array of all models
       def all
-        identity_map.values
+        @all ||= RecordArray.new
       end
 
       def find(id, &block)
@@ -60,6 +60,7 @@ module Vienna
 
       def reset!
         @identity_map = {}
+        @all = nil
       end
     end
 
@@ -114,6 +115,7 @@ module Vienna
     def did_create
       @new_record = false
       self.class.identity_map[self.id] = self
+      self.class.all.push self
 
       trigger_events(:create)
     end

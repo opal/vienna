@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Vienna::Model do
 
+  before { SimpleModel.reset! }
+
   let(:model) { SimpleModel.new }
 
   describe "#did_destroy" do
@@ -39,6 +41,12 @@ describe Vienna::Model do
       model.class.identity_map[863].should eq(model)
     end
 
+    it "adds record to class record array" do
+      model.class.all.should == []
+      model.did_create
+      model.class.all.should == [model]
+    end
+
     it "triggers a :create event on the record" do
       called = false
       model.on(:create) { called = true }
@@ -51,6 +59,14 @@ describe Vienna::Model do
       model.class.on(:create) { called = true }
       model.did_create
       called.should be_true
+    end
+  end
+
+  describe ".all" do
+    it "is a record array of all models" do
+      model.class.all.should == []
+      model.did_create
+      model.class.all.should == [model]
     end
   end
 end
