@@ -1,3 +1,5 @@
+require 'vienna/record_array'
+
 module Vienna
   module Persistence
     module ClassMethods
@@ -7,12 +9,12 @@ module Vienna
       end
 
       def identity_map
-        @identity_map ||= {}
+        @identity_map
       end
 
       # Return a simple array of all models
       def all
-        @all ||= RecordArray.new
+        @all
       end
 
       def find(id, &block)
@@ -38,8 +40,6 @@ module Vienna
 
         model.load(attributes)
 
-        model.trigger_events(:load)
-
         model
       end
 
@@ -60,7 +60,7 @@ module Vienna
 
       def reset!
         @identity_map = {}
-        @all = nil
+        @all = RecordArray.new
       end
     end
 
@@ -69,10 +69,8 @@ module Vienna
     end
 
     def load(attributes = nil)
-      @loaded = true
-      @new_record = false
-
       self.attributes = attributes if attributes
+      did_load
     end
 
     def new_record?
@@ -125,6 +123,14 @@ module Vienna
     # overriden, aslong as `super()` is called.
     def did_update
       trigger_events(:update)
+    end
+
+    # Called when this model gets loaded
+    def did_load
+      @loaded = true
+      @new_record = false
+
+      trigger_events(:load)
     end
   end
 end

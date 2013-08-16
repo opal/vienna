@@ -14,6 +14,10 @@ module Vienna
 
     attr_accessor :id
 
+    def self.inherited(subclass)
+      subclass.reset!
+    end
+
     def initialize(attributes = nil)
       @attributes = {}
       @new_record = true
