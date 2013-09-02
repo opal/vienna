@@ -1,9 +1,12 @@
 require 'vienna/adapters/base'
-require 'opal-browser/local_storage'
 
 module Vienna
   # Adapter using LocalStorage as a backend
   class LocalAdapter < Adapter
+    def initialize
+      @storage = $global.localStorage
+    end
+
     def create_record(record, &block)
       record.id = self.unique_id
 
@@ -27,7 +30,7 @@ module Vienna
     end
 
     def find_all(klass, &block)
-      if data = Browser::LocalStorage[klass.name]
+      if data = @storage.getItem(klass.name)
         models = JSON.parse(data).map { |m| klass.load(m) }
         block.call(models) if block
       end
@@ -36,7 +39,7 @@ module Vienna
     # sync all records in given class to localstorage, now!
     def sync_models(klass)
       name = klass.name
-      Browser::LocalStorage[name] = klass.all.to_json
+      @storage.setItem name, klass.all.to_json
     end
 
     # generate a new unique id.. just use timestamp for now
