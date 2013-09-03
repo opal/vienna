@@ -36,6 +36,7 @@ module Vienna
           model = self.new
           model.id = id
           map[id] = model
+          self.all << model
         end
 
         model.load(attributes)

@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Vienna::Model do
+  before do
+    SimpleModel.reset!
+    AdvancedModel.reset!
+  end
+
   describe ".new" do
     it "should set @new_record to true" do
       SimpleModel.new.new_record?.should be_true
@@ -37,6 +42,12 @@ describe Vienna::Model do
       SimpleModel.identity_map[8].should be_nil
       model = SimpleModel.load(id: 8)
       SimpleModel.identity_map[8].should eq(model)
+    end
+
+    it "saves the model in .all record array" do
+      SimpleModel.all.should == []
+      model = SimpleModel.load(id: 10)
+      SimpleModel.all.should == [model]
     end
 
     it "should update existing models" do
