@@ -3,20 +3,16 @@ require 'spec_helper'
 describe Vienna::Router do
   let(:router) { Vienna::Router.new }
 
-  def set_native_hash hash
-    `window.location.hash = #{hash}`
-  end
-
   describe "#update" do
     it "should update Router.path" do
-      set_native_hash '#/hello/world'
+      $global.location.hash = "#/hello/world"
       router.update
 
       router.path.should eq('/hello/world')
     end
 
     it "calls #match with the new @path" do
-      set_native_hash '#/foo/bar'
+      $global.location.hash = "#/foo/bar"
       called = nil
 
       router.define_singleton_method(:match) { |m| called = m }
