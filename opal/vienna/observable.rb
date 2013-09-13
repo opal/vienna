@@ -1,7 +1,7 @@
 module Vienna
   module Observable
 
-    def observe(attribute, &handler)
+    def add_observer(attribute, &handler)
       unless observers = @attr_observers
         observers = @attr_observers = {}
         old_values = @attr_old_values = {}
@@ -15,7 +15,7 @@ module Vienna
       handlers << handler
     end
 
-    def unobserve(attribute, handler)
+    def remove_observer(attribute, handler)
       return unless @attr_observers
 
       if handlers = @attr_observers[attribute]

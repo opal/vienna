@@ -47,10 +47,10 @@ describe Vienna::Observable do
     end
   end
 
-  describe "#observe" do
+  describe "#add_observer" do
     it "handlers can be added to observe specific attributes" do
       count = 0
-      object.observe(:foo) { count += 1 }
+      object.add_observer(:foo) { count += 1 }
 
       object.foo = 100
       count.should eq(1)
@@ -61,8 +61,8 @@ describe Vienna::Observable do
 
     it "allows more than one handler to be added for an attribute" do
       result = []
-      object.observe(:foo) { result << :first }
-      object.observe(:foo) { result << :second }
+      object.add_observer(:foo) { result << :first }
+      object.add_observer(:foo) { result << :second }
 
       object.foo = 42
       result.should eq([:first, :second])
@@ -78,13 +78,13 @@ describe Vienna::Observable do
     end
 
     it "does not break when given an attriubte with no observers (but another observable exists)" do
-      object.observe(:foo) {}
+      object.add_observer(:foo) {}
       object.attribute_did_change(:bar)
     end
 
     it "passes new value to each handler" do
       result = nil
-      object.observe(:foo) { |val| result = val }
+      object.add_observer(:foo) { |val| result = val }
 
       object.foo = 42
       result.should eq(42)
@@ -94,26 +94,26 @@ describe Vienna::Observable do
     end
   end
 
-  describe "#unobserve" do
+  describe "#remove_observer" do
     it "has no effect when no observers setup for attribute" do
-      object.unobserve(:foo, proc {})
+      object.remove_observer(:foo, proc {})
     end
 
     it "has no effect if the handler doesnt exist for attribute" do
       p = proc {}
-      object.observe(:foo) {}
-      object.unobserve(:foo, p)
+      object.add_observer(:foo) {}
+      object.remove_observer(:foo, p)
     end
 
     it "removes an existing handler for given attribute" do
       count = 0
       handler = proc { count += 1 }
-      object.observe(:foo, &handler)
+      object.add_observer(:foo, &handler)
 
       object.foo = 42
       count.should eq(1)
 
-      object.unobserve(:foo, handler)
+      object.remove_observer(:foo, handler)
       object.foo = 49
       count.should eq(1)
     end

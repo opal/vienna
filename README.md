@@ -218,6 +218,33 @@ end
 # => need to show user: 5
 ```
 
+## Observable
+
+Adds KVO style attribute observing.
+
+```ruby
+class MyObject
+  include Vienna::Observable
+
+  attr_accessor :name
+  attr_reader :age
+
+  def age=(age)
+    @age = age + 10
+  end
+end
+
+obj = MyObject.new
+obj.add_observer(:name) { |new_val| puts "name changed to #{new_val}" }
+obj.add_observer(:age) { |new_age| puts "age changed to #{new_age}" }
+
+obj.name = "bob"
+obj.age = 42
+
+# => "name changed to bob"
+# => "age changed to 52"
+```
+
 #### Todo
 
 * Support older browsers which do not support onhashchange.
