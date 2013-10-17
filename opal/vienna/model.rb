@@ -6,25 +6,16 @@ module Vienna
   class Model
     include Attributes
     include Persistence
-
     include Eventable
     extend Eventable
 
-    primary_key :id
+    class << self
+      def inherited(subclass)
+        subclass.reset!
+      end
+    end
 
     attr_accessor :id
-
-    def self.inherited(subclass)
-      subclass.reset!
-    end
-
-    def initialize(attributes = nil)
-      @attributes = {}
-      @new_record = true
-      @loaded     = false
-
-      self.attributes = attributes if attributes
-    end
 
     def self.from_form(form)
       attrs = {}

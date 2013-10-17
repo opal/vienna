@@ -5,10 +5,9 @@ module Vienna
         attributes.each { |name| attribute name }
       end
 
-      def attribute(attr_name)
-        columns << attr_name
-
-        attr_accessor attr_name
+      def attribute(name)
+        columns << name
+        attr_accessor name
       end
 
       def columns
@@ -21,7 +20,7 @@ module Vienna
     end
 
     def self.included(klass)
-      klass.extend ClassMethods
+      klass.extend(ClassMethods)
     end
 
     def [](attribute)
@@ -42,5 +41,14 @@ module Vienna
         end
       end
     end
+
+    def initialize(attributes = nil)
+      @attributes = {}
+      @new_record = true
+      @loaded     = false
+
+      self.attributes = attributes if attributes
+    end
   end
 end
+
