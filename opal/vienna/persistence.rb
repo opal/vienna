@@ -9,12 +9,12 @@ module Vienna
       end
 
       def identity_map
-        @identity_map
+        @identity_map ||= {}
       end
 
       # Return a simple array of all models
       def all
-        @all
+        @all ||= RecordArray.new
       end
 
       def find(id, &block)
@@ -60,8 +60,7 @@ module Vienna
       end
 
       def reset!
-        @identity_map = {}
-        @all = RecordArray.new
+        @identity_map = @all = nil
       end
     end
 
@@ -129,3 +128,4 @@ module Vienna
     end
   end
 end
+

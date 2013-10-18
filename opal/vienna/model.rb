@@ -9,12 +9,6 @@ module Vienna
     include Eventable
     extend Eventable
 
-    class << self
-      def inherited(subclass)
-        subclass.reset!
-      end
-    end
-
     attr_accessor :id
 
     def self.from_form(form)
