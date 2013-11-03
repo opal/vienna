@@ -14,7 +14,7 @@ module Vienna
       options = { dataType: "json", payload: record.as_json }
       HTTP.post(url, options) do |response|
         if response.ok?
-          record.load Hash.new(response.body)
+          record.load response.json
           record.class.trigger :ajax_success, response
           record.did_create
           record.class.trigger :change, record.class.all
@@ -31,7 +31,7 @@ module Vienna
       options = { dataType: "json", payload: record.as_json }
       HTTP.put(url, options) do |response|
         if response.ok?
-          record.class.load_json response.body
+          record.class.load response.json
           record.class.trigger :ajax_success, response
           record.did_update
           record.class.trigger :change, record.class.all
@@ -72,7 +72,7 @@ module Vienna
       options = { dataType: "json", data: params }.merge(options)
       HTTP.get(url, options) do |response|
         if response.ok?
-          response.body.map { |json| model.load_json json }
+          response.json.each { |record| model.load record }
           model.trigger :ajax_success, response
           model.trigger :refresh, model.all
         else
