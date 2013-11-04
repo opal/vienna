@@ -1,6 +1,7 @@
 require 'vienna/attributes'
 require 'vienna/persistence'
 require 'vienna/eventable'
+require 'vienna/utils'
 
 module Vienna
   class Model
@@ -15,7 +16,7 @@ module Vienna
       attrs = {}
       `#{form}.serializeArray()`.each do |field|
         key, val = `field.name`, `field.value`
-        attrs[key] = val
+        Utils.normalize_params attrs, key, val
       end
       model = new attrs
       if attrs.has_key?(self.primary_key) and ! attrs[self.primary_key].empty?
