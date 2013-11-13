@@ -7,12 +7,12 @@ describe Vienna::Model do
 
     it "marks the model instance as loaded" do
       model.load({})
-      model.loaded?.should be_true
+      model.should be_loaded
     end
 
     it "marks the model as not being a new record" do
       model.load({})
-      model.new_record?.should be_false
+      model.should_not be_new_record
     end
   end
 end

@@ -11,6 +11,10 @@ module Vienna
       @records = []
     end
 
+    def ==(arr)
+      @records == arr
+    end
+
     def method_missing(sym, *args, &block)
       @records.__send__(sym, *args, &block)
     end

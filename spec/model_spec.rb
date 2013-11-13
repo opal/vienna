@@ -1,14 +1,9 @@
 require 'spec_helper'
 
 describe Vienna::Model do
-  before do
-    SimpleModel.reset!
-    AdvancedModel.reset!
-  end
-
   describe ".new" do
     it "should set @new_record to true" do
-      SimpleModel.new.new_record?.should be_true
+      SimpleModel.new.new_record?.should eq(true)
     end
   end
 
@@ -35,7 +30,7 @@ describe Vienna::Model do
 
     it "should set @new_record to false on the model" do
       model = SimpleModel.load(id: 42)
-      model.new_record?.should be_false
+      model.new_record?.should eq(false)
     end
 
     it "should cache model" do

@@ -8,14 +8,13 @@ describe Vienna::Model do
   describe ".attribute" do
 
     let(:model) { ModelAttributeSpec.new }
-    let(:attributes) { model.instance_variable_get(:@attributes) }
 
     it "should create a reader method for attribute" do
-      model.respond_to?(:first_name).should be_true
+      model.should respond_to(:first_name)
     end
 
     it "should create a writer method for attribute" do
-      model.respond_to?(:first_name=).should be_true
+      model.should respond_to(:first_name=)
     end
 
     describe "writer" do

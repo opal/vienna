@@ -38,7 +38,7 @@ describe Vienna::Eventable do
 
       obj.off(:foo, handler)
       obj.trigger(:foo)
-      called.should be_false
+      called.should eq(false)
     end
   end
 

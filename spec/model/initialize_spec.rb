@@ -36,11 +36,11 @@ describe Vienna::Model do
     end
 
     it "marks the model as being a new record" do
-      ModelInitializeSpec.new.new_record?.should be_true
+      ModelInitializeSpec.new.should be_new_record
     end
 
     it "marks the model as not being loaded" do
-      ModelInitializeSpec.new.loaded?.should be_false
+      ModelInitializeSpec.new.should_not be_loaded
     end
   end
 end
