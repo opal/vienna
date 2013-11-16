@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage     = 'http://opalrb.org'
   s.summary      = '.'
   s.description  = '..'
+  s.license      = 'MIT'
 
   s.files          = `git ls-files`.split("\n")
   s.executables    = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
