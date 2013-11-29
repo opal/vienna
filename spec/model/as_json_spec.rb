@@ -1,31 +1,28 @@
 require 'spec_helper'
 
-class AsJsonSpec < Vienna::Model
-  attributes :first_name, :last_name
-end
-
 describe Vienna::Model do
-
-  let(:model) { AsJsonSpec.new }
-
   describe "#as_json" do
+    let(:model) { User.new }
+
     it "returns a hash" do
-      model.as_json.should be_kind_of(Hash)
+      expect(model.as_json).to be_kind_of(Hash)
     end
 
     it "contains all attributes on model" do
-      model.as_json.should == { "first_name" => nil, "last_name" => nil }
+      expect(model.as_json).to eq({ "foo" => nil, "bar" => nil, "baz" => nil })
 
-      model.first_name = "Adam"
-      model.as_json.should eq({ "first_name" => "Adam", "last_name" => nil })
+      model.foo = "Adam"
+      expect(model.as_json).to eq({ "foo" => "Adam", "bar" => nil, "baz" => nil })
 
-      model.last_name = "Beynon"
-      model.as_json.should eq({ "first_name" => "Adam", "last_name" => "Beynon" })
+      model.bar = "Beynon"
+
+      expect(model.as_json).to eq({ "foo" => "Adam", "bar" => "Beynon", "baz" => nil })
     end
 
     it "includes the id, if set" do
       model.id = 42
-      model.as_json.should eq({ "id" => 42, "first_name" => nil, "last_name" => nil })
+
+      expect(model.as_json).to eq({ "id" => 42, "foo" => nil, "bar" => nil, "baz" => nil })
     end
   end
 end

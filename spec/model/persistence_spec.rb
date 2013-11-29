@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe Vienna::Model do
-
-  before { SimpleModel.reset! }
-
   let(:model) { SimpleModel.new }
 
   describe "#did_destroy" do

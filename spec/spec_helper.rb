@@ -8,6 +8,10 @@ class SimpleModel < Vienna::Model
   attribute :name
 end
 
+class User < Vienna::Model
+  attributes :foo, :bar, :baz
+end
+
 class AdvancedModel < Vienna::Model
   primary_key :title
 end
