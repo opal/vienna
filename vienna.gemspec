@@ -21,6 +21,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'opal-jquery'
   s.add_dependency 'opal-activesupport'
 
-  s.add_development_dependency 'opal-rspec', '~> 0.2.0'
+  s.add_development_dependency 'opal-rspec', '>= 0.2.1'
   s.add_development_dependency 'rake'
 end
