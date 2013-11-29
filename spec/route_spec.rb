@@ -57,7 +57,33 @@ describe Vienna::Router::Route do
       subject.new('/:first/:second') { |params|
         params.should eq({ 'first' => 'woosh', 'second' => 'kapow' })
       }.match('/woosh/kapow')
-     end
+    end
+
+    describe "optional segment" do
+      it "can match simple optional segments" do
+        route = subject.new('/foo(/bar)')
+
+        expect(route.match('/foo')).to eq(true)
+        expect(route.match('/foo/bar')).to eq(true)
+        expect(route.match('/foo/baz')).to_not eq(true)
+      end
+
+      it "can match a named part inside an optional part" do
+        route = subject.new('/foo(/:bar)')
+        expect(route.named).to eq(['bar'])
+      end
+
+      it "returns set named part to nil when optional part not given" do
+        subject.new('/foo(/:bar)') { |params|
+          params.should eq({ 'bar' => nil })
+        }.match('/foo')
+      end
+
+      it "returns correct value for named param inside optional part" do
+        subject.new('/foo(/:bar)') { |params|
+          params.should eq({ 'bar' => '42' })
+        }.match('/foo/42')
+      end
+    end
   end
 end
-
