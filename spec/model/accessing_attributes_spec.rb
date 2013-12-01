@@ -18,10 +18,6 @@ describe Vienna::Model do
       model.first_name = "Adam"
       model[:first_name].should eq("Adam")
     end
-
-    it "raises an exception when accessing an undefined attribute" do
-      lambda { model[:foo] }.should raise_error(Exception)
-    end
   end
 
   describe "#[]=" do

@@ -9,36 +9,36 @@ class EventableSpec
 end
 
 describe Vienna::Eventable do
-
-  let(:obj) { EventableSpec.new }
+  subject { EventableSpec.new }
 
   describe "#on" do
     it "should register event handlers for given name" do
       handler = Proc.new {}
-      obj.on(:foo, &handler)
-      obj.events[:foo].should == [handler]
+      subject.on(:foo, &handler)
+
+      expect(subject.events[:foo]).to eq([handler])
     end
 
     it "returns the given handler" do
       handler = Proc.new {}
-      obj.on(:foo, &handler).should eq(handler)
+      expect(subject.on(:foo, &handler)).to eq(handler)
     end
   end
 
   describe "#off" do
     it "has no affect if no handlers defined at all" do
-      obj.off(:bar, proc {})
-      obj.on(:foo) { raise "err" }
-      obj.off(:bar, proc {})
+      subject.off(:bar, proc {})
+      subject.on(:foo) { raise "err" }
+      subject.off(:bar, proc {})
     end
 
     it "removes the handler for the event" do
       called = false
-      handler = obj.on(:foo) { called = true }
+      handler = subject.on(:foo) { called = true }
 
-      obj.off(:foo, handler)
-      obj.trigger(:foo)
-      called.should be_false
+      subject.off(:foo, handler)
+      subject.trigger(:foo)
+      expect(called).to be_falsy
     end
   end
 
@@ -46,47 +46,47 @@ describe Vienna::Eventable do
     it "should call handler" do
       called = false
 
-      obj.on(:foo) { called = true }
+      subject.on(:foo) { called = true }
       called.should == false
 
-      obj.trigger(:foo)
+      subject.trigger(:foo)
       called.should == true
     end
 
     it "should pass all arguments to handler" do
       args = nil
-      obj.on(:foo) { |*a| args = a }
+      subject.on(:foo) { |*a| args = a }
 
-      obj.trigger(:foo)
+      subject.trigger(:foo)
       args.should == []
 
-      obj.trigger(:foo, 1)
+      subject.trigger(:foo, 1)
       args.should == [1]
 
-      obj.trigger(:foo, 1, 2, 3)
+      subject.trigger(:foo, 1, 2, 3)
       args.should == [1, 2, 3]
     end
 
     it "should allow multiple different events to be registered" do
       result = []
-      obj.on(:foo) { result << :foo }
-      obj.on(:bar) { result << :bar }
+      subject.on(:foo) { result << :foo }
+      subject.on(:bar) { result << :bar }
 
-      obj.trigger(:foo)
+      subject.trigger(:foo)
       result.should == [:foo]
 
-      obj.trigger(:bar)
+      subject.trigger(:bar)
       result.should == [:foo, :bar]
     end
 
     it "should allow multiple handlers for an event" do
       count = 0
 
-      obj.on(:foo) { count += 1 }
-      obj.on(:foo) { count += 1 }
-      obj.on(:foo) { count += 1 }
-      obj.on(:foo) { count += 1 }
-      obj.trigger(:foo)
+      subject.on(:foo) { count += 1 }
+      subject.on(:foo) { count += 1 }
+      subject.on(:foo) { count += 1 }
+      subject.on(:foo) { count += 1 }
+      subject.trigger(:foo)
 
       count.should == 4
     end

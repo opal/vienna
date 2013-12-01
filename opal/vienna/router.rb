@@ -44,12 +44,15 @@ module Vienna
       # Regexp for matching named splats in path
       SPLAT = /\\\*(\w+)/
 
+      OPTIONAL = /\\\((.*?)\\\)/
+
       attr_reader :regexp, :named
 
       def initialize(pattern, &handler)
         @named, @handler = [], handler
 
         pattern = Regexp.escape pattern
+        pattern = pattern.gsub OPTIONAL, "(?:$1)?"
 
         pattern.gsub(NAMED) { |m| @named << m[1..-1] }
         pattern.gsub(SPLAT) { |m| @named << m[2..-1] }
