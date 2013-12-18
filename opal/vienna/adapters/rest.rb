@@ -88,7 +88,8 @@ module Vienna
       return record.url if record.respond_to? :url
 
       if klass_url = record.class.url
-        return "#{klass_url}/#{record.id}"
+        klass_url += "/#{record.id}" unless record.id.nil? or record.id.empty?
+        return klass_url
       end
 
       raise "Model does not define REST url: #{record}"
