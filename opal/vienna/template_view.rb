@@ -25,6 +25,10 @@ module Vienna
       after_render
     end
 
+    def partial(name)
+      Template[name].render(self)
+    end
+
     def _render_template(template)
       @output_buffer = OutputBuffer.new
       instance_exec @output_buffer, &template.body
