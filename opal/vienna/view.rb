@@ -46,6 +46,10 @@ module Vienna
       :div
     end
 
+    def find(selector)
+      element.find(selector)
+    end
+
     def setup_events
       return @dom_events if @dom_events
 
