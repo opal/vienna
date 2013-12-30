@@ -78,9 +78,9 @@ module Vienna
         else
           model.trigger :ajax_error, response
         end
+        block.call(model.all) if block
       end
 
-      block.call(model.all) if block
     end
 
     def record_url(record)
