@@ -21,6 +21,11 @@ module Vienna
         @all = new_all
       end
 
+      def destroy_all(&block)
+        self.adapter.find_all(self.class){|model| model.destroy}
+        block.call if block
+      end
+
       def find(id, &block)
         if record = identity_map[id]
           return record
