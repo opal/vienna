@@ -24,6 +24,12 @@ describe Vienna::Model do
       model.did_destroy
       SimpleModel.identity_map[model.id].should eq(nil)
     end
+
+    it "removes the record from the all collection" do
+      model = SimpleModel.load(:first_name => "Adam", id: 872)
+      model.did_destroy
+      SimpleModel.all.count.should eq(0)
+    end
   end
 
   describe "#did_create" do

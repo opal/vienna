@@ -17,6 +17,10 @@ module Vienna
         @all ||= RecordArray.new
       end
 
+      def all=(new_all)
+        @all = new_all
+      end
+
       def find(id, &block)
         if record = identity_map[id]
           return record
@@ -107,6 +111,12 @@ module Vienna
     # otherwise undefined bad things will happen.
     def did_destroy
       self.class.identity_map.delete self.id
+      
+      #rebuild all
+      new_all = RecordArray.new
+      self.class.all.each{|record| all << record unless record.id == self.id}
+      self.class.all = new_all
+
       trigger_events(:destroy)
     end
 
