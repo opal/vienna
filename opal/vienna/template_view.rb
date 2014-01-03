@@ -15,12 +15,20 @@ module Vienna
       end
     end
 
+    def create_element
+      if template = Template[self.class.template]
+        html = _render_template(template)
+      end
+      return Element.parse(html)
+    end
+
     def render
       before_render
 
-      if template = Template[self.class.template]
-        element.html = _render_template(template)
-      end
+      #overwrite any previous element
+      #calling element will create the element from the template data
+      @element = nil 
+      element 
 
       after_render
     end
