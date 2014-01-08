@@ -1,3 +1,5 @@
+require 'opal-jquery'
+
 module Vienna
   class HistoryRouter
     attr_reader :path, :routes
