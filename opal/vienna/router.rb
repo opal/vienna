@@ -1,3 +1,5 @@
+require 'native'
+
 module Vienna
   class Router
     attr_reader :path, :routes
