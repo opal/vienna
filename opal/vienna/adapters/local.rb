@@ -31,6 +31,8 @@ module Vienna
 
     def find_all(klass, &block)
       if data = @storage.getItem(klass.name)
+        puts "Data:"
+        puts data.inspect
         models = JSON.parse(data).map { |m| klass.load(m) }
         block.call(models) if block
       end
@@ -44,7 +46,7 @@ module Vienna
 
     # generate a new unique id.. just use timestamp for now
     def unique_id
-      (Time.now.to_f * 1000).to_s
+      (Time.now.to_f * rand(100000)).to_i.to_s
     end
   end
 end

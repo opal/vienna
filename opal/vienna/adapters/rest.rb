@@ -10,20 +10,21 @@ module Vienna
   # Adapter for a REST backend
   class RESTAdapter < Adapter
     def create_record(record, &block)
-      url = record_url(record)
+      url = record_url(record, true)
       options = { dataType: "json", payload: record.as_json }
       HTTP.post(url, options) do |response|
         if response.ok?
           record.load Hash.new(response.body)
-          record.class.trigger :ajax_success, response
+          record.class.trigger :ajax_success, response, record
           record.did_create
           record.class.trigger :change, record.class.all
         else
           record.trigger_events :ajax_error, response
         end
+
+        block.call(record) if block
       end
       
-      block.call(record) if block
     end
 
     def update_record(record, &block)
@@ -38,9 +39,9 @@ module Vienna
         else
           record.trigger_events :ajax_error, response
         end
+
+        block.call(record) if block
       end
-      
-      block.call(record) if block
     end
 
     def delete_record(record, &block)
@@ -83,12 +84,16 @@ module Vienna
 
     end
 
-    def record_url(record)
+    def record_url(record, new_record=false)
       return record.to_url if record.respond_to? :to_url
       return record.url if record.respond_to? :url
 
       if klass_url = record.class.url
-        return "#{klass_url}/#{record.id}"
+        if new_record 
+          return "#{klass_url}" 
+        else
+          return "#{klass_url}/#{record.id}"
+        end
       end
 
       raise "Model does not define REST url: #{record}"

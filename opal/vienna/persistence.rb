@@ -3,6 +3,7 @@ require 'vienna/record_array'
 module Vienna
   module Persistence
     module ClassMethods
+
       def adapter(klass = nil)
         return @adapter = klass.new if klass
         @adapter || raise("No adapter for #{self}")
@@ -22,7 +23,9 @@ module Vienna
       end
 
       def destroy_all(&block)
-        self.adapter.find_all(self.class){|model| model.destroy}
+        self.adapter.find_all(self) do |models|
+          models.each { |m| m.destroy }
+        end
         block.call if block
       end
 
@@ -71,16 +74,17 @@ module Vienna
       def reset!
         @identity_map = @all = nil
       end
-    end
+    end #End of class methods
 
     def self.included(klass)
       klass.extend(ClassMethods)
+      attr_accessor :new_record
     end
 
     def load(attributes = nil)
       @loaded, @new_record = true, false
-      self.attributes = attributes if attributes
 
+      self.attributes = attributes if attributes
       trigger_events :load
     end
 
@@ -93,6 +97,8 @@ module Vienna
     end
 
     def save(&block)
+      puts "save from persistence"
+      puts "new record:#{@new_record}"
       @new_record ? create(&block) : update(&block)
     end
 
@@ -101,6 +107,7 @@ module Vienna
     end
 
     def update(attributes = nil, &block)
+      puts "update from persistence"
       self.attributes = attributes if attributes
       self.class.adapter.update_record(self, &block)
     end
@@ -119,7 +126,7 @@ module Vienna
       
       #rebuild all
       new_all = RecordArray.new
-      self.class.all.each{|record| all << record unless record.id == self.id}
+      self.class.all.each{|record| new_all << record unless record.id == self.id}
       self.class.all = new_all
 
       trigger_events(:destroy)
