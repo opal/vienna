@@ -1,0 +1,16 @@
+# Logfile created on 2013-12-30 21:45:35 -0700 by logger.rb/36483
+I, [2013-12-30T21:45:35.174335 #5578]  INFO -- : 0:  rake (10.1.1) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/rake-10.1.1.gemspec
+I, [2013-12-30T21:45:35.174959 #5578]  INFO -- : 0:  hike (1.2.3) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/hike-1.2.3.gemspec
+I, [2013-12-30T21:45:35.175356 #5578]  INFO -- : 0:  json (1.8.1) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/json-1.8.1.gemspec
+I, [2013-12-30T21:45:35.175873 #5578]  INFO -- : 0:  multi_json (1.8.2) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/multi_json-1.8.2.gemspec
+I, [2013-12-30T21:45:35.176235 #5578]  INFO -- : 0:  source_map (3.0.1) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/source_map-3.0.1.gemspec
+I, [2013-12-30T21:45:38.902279 #5578]  INFO -- : 0:  opal (0.5.5) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/opal-0.5.5.gemspec
+I, [2013-12-30T21:45:38.904005 #5578]  INFO -- : 0:  opal-activesupport (0.0.5) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/opal-activesupport-0.0.5.gemspec
+I, [2013-12-30T21:45:40.310823 #5578]  INFO -- : 0:  opal-jquery (0.1.2) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/opal-jquery-0.1.2.gemspec
+I, [2013-12-30T21:45:40.311592 #5578]  INFO -- : 0:  rack (1.5.2) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/rack-1.5.2.gemspec
+I, [2013-12-30T21:45:40.312029 #5578]  INFO -- : 0:  tilt (1.4.1) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/tilt-1.4.1.gemspec
+I, [2013-12-30T21:45:40.312426 #5578]  INFO -- : 0:  sprockets (2.10.1) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/sprockets-2.10.1.gemspec
+I, [2013-12-30T21:45:41.401963 #5578]  INFO -- : 0:  opal-sprockets (0.3.0) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/opal-sprockets-0.3.0.gemspec
+I, [2013-12-30T21:45:43.364800 #5578]  INFO -- : 0:  opal-rspec (0.2.1) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/opal-rspec-0.2.1.gemspec
+I, [2013-12-30T21:45:44.026945 #5578]  INFO -- : 0:  vienna (0.0.2) from /Users/stevebooks/dev/expense_web/vendor/gems/vienna/vienna.gemspec
+I, [2013-12-30T21:45:44.027396 #5578]  INFO -- : 0:  bundler (1.5.0) from /Users/stevebooks/.rbenv/versions/2.0.0-p247/lib/ruby/gems/2.0.0/specifications/bundler-1.5.0.gemspec
