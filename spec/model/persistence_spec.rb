@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe Vienna::Model do
-  let(:model) { SimpleModel.new }
-
+  let(:model_class) { SimpleModel }
+  let(:model) { model_class.new }
+  let(:loaded_model) { model_class.load(:first_name => "Adam", id: 872) }
   describe "#did_destroy" do
     it "triggers a :destroy event on the record" do
       called = false
@@ -13,16 +14,30 @@ describe Vienna::Model do
 
     it "triggers a :destroy event on the class" do
       called = false
-      SimpleModel.on(:destroy) { called = true }
+      model_class.on(:destroy) { called = true }
       model.did_destroy
       called.should eq(true)
     end
 
     it "removes the record from the class identity_map" do
-      model = SimpleModel.load(:first_name => "Adam", id: 872)
+      loaded_model.did_destroy
+      model_class.identity_map[loaded_model.id].should eq(nil)
+    end
 
-      model.did_destroy
-      SimpleModel.identity_map[model.id].should eq(nil)
+    it "removes the record from the class record_array" do
+      loaded_model.did_destroy
+      model_class.all.should_not include(loaded_model)
+    end
+  end
+
+  describe '#destroyed?' do
+    it 'is false for "living" models' do
+      model.destroyed?.should be_falsey
+    end
+
+    it "is true for destroyed models" do
+      loaded_model.did_destroy
+      loaded_model.destroyed?.should be_truthy
     end
   end
 
