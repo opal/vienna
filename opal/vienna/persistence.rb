@@ -79,6 +79,10 @@ module Vienna
       @new_record
     end
 
+    def destroyed?
+      @destroyed
+    end
+
     def loaded?
       @loaded
     end
@@ -106,6 +110,7 @@ module Vienna
     # a `:destroy` event. If you override this method, you *must* call super,
     # otherwise undefined bad things will happen.
     def did_destroy
+      @destroyed = true
       self.class.identity_map.delete self.id
       self.class.all.delete self
 
