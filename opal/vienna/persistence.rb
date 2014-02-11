@@ -107,6 +107,8 @@ module Vienna
     # otherwise undefined bad things will happen.
     def did_destroy
       self.class.identity_map.delete self.id
+      self.class.all.delete self
+
       trigger_events(:destroy)
     end
 
