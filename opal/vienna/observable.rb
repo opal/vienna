@@ -4,7 +4,10 @@ module Vienna
     def add_observer(attribute, &handler)
       unless observers = @attr_observers
         observers = @attr_observers = {}
-        old_values = @attr_old_values = {}
+      end
+
+      if attribute.include? '.'
+        return PathObserver.create(self, attribute, handler)
       end
 
       unless handlers = observers[attribute]
@@ -44,6 +47,44 @@ module Vienna
           result
         end
       end
+    end
+  end
+
+  class PathObserver
+    def self.create(object, path, handler)
+      parts = path.split '.'
+      base = PathObserver.new parts[0]
+      last = base
+
+      parts.drop(1).each do |attr|
+        last = last.next = PathObserver.new(attr)
+      end
+
+      base.object = object
+      last.handler = handler
+    end
+
+    attr_accessor :next, :handler
+
+    def initialize(attr)
+      @attr = attr
+    end
+
+    def object=(obj)
+      return if obj == @object
+
+      if @object = obj
+        obj.add_observer(@attr) { value_changed }
+      end
+
+      value_changed
+    end
+
+    def value_changed
+      value = @object.__send__ @attr
+
+      @next.object = value if @next
+      @handler.call value if @handler
     end
   end
 end
