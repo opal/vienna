@@ -6,6 +6,7 @@ module ObservableArray
       alias :old_push :<<
       alias :old_clear :clear
       alias :old_insert :insert
+      alias :old_delete :delete
     end
 
     array.extend self
@@ -39,6 +40,16 @@ module ObservableArray
 
     array_content_did_change size, 0, 1
     self
+  end
+
+  def delete(obj)
+    if idx = index(obj)
+      delete_at idx
+
+      array_content_did_change idx, 1, 0
+    end
+
+    obj
   end
 
   def insert(idx, object)
