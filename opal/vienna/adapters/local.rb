@@ -1,3 +1,4 @@
+require 'promise'
 require 'vienna/adapters/base'
 
 module Vienna
@@ -7,32 +8,33 @@ module Vienna
       @storage = $global.localStorage
     end
 
-    def create_record(record, &block)
-      record.id = self.unique_id
+    def create_record(record)
+      record.id = unique_id
 
       record.did_create
       sync_models(record.class)
 
-      block.call(record) if block
+      Promise.value record
     end
 
-    def update_record(record, &block)
+    def update_record(record)
       record.did_update
       sync_models(record.class)
 
-      block.call(record) if block
+      Promise.value record
     end
 
-    def delete_record(record, &block)
+    def delete_record(record)
       record.did_destroy
       sync_models record.class
-      block.call(record) if block
+
+      Promise.value record
     end
 
-    def find_all(klass, &block)
+    def find_all(klass)
       if data = @storage.getItem(klass.name)
         models = JSON.parse(data).map { |m| klass.load(m) }
-        block.call(models) if block
+        Promise.value models
       end
     end
 

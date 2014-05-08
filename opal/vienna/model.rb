@@ -145,17 +145,17 @@ module Vienna
       @loaded
     end
 
-    def save(&block)
-      @new_record ? create(&block) : update(&block)
+    def save
+      @new_record ? create : update
     end
 
-    def create(&block)
-      self.class.adapter.create_record(self, &block)
+    def create
+      self.class.adapter.create_record self
     end
 
-    def update(attributes = nil, &block)
+    def update(attributes = nil)
       self.attributes = attributes if attributes
-      self.class.adapter.update_record(self, &block)
+      self.class.adapter.update_record self
     end
 
     def destroy(&block)
@@ -178,7 +178,7 @@ module Vienna
     # A private method. This is called by the adapter once this record has been
     # created in the backend.
     def did_create
-      @new_record = false
+      self.new_record = false
       self.class.identity_map[self.id] = self
       self.class.all.push self
 
