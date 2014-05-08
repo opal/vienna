@@ -245,6 +245,22 @@ obj.age = 42
 # => "age changed to 52"
 ```
 
+## Observable Arrays
+
+```ruby
+array = Vienna::ObservableArray.new
+
+array.add_observer(:content) { |content| puts "content is now #{content}" }
+array.add_observer(:size) { |size| puts "size is now #{size}" }
+
+array << :foo
+array << :bar
+
+# => content is now [:foo]
+# => size is now 1
+# => content is now [:bar]
+# => size is now 2
+
 #### Todo
 
 * Support older browsers which do not support onhashchange.

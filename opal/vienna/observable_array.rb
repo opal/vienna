@@ -1,85 +1,71 @@
 require 'vienna/observable'
 
-module ObservableArray
-  def self.infect(array)
-    class << array
-      alias :old_push :<<
-      alias :old_clear :clear
-      alias :old_insert :insert
-      alias :old_delete :delete
+module Vienna
+  class ObservableArray
+    include Vienna::Observable
+
+    attr_reader :content
+
+    def initialize(content = [])
+      @content = content
     end
 
-    array.extend self
-    array.extend Vienna::Observable
-  end
+    def inspect
+      "#<ObservableArray: #{content.inspect}>"
+    end
 
-  def content
-    self
-  end
+    alias to_s inspect
 
-  def array_content_did_change(idx, remove, added)
-    if observers = @array_observers
-      observers.each do |obj|
-        obj.array_did_change(self, idx, remove, added)
-
+    def array_content_did_change(idx, removed, added)
+      if observers = @array_observers
+        observers.each { |obj|
+          obj.array_did_change(self, idx, removed, added)
+        }
       end
+
+      attribute_did_change :size
+      attribute_did_change :content
+      attribute_did_change :empty?
     end
 
-    attribute_did_change :size
-    attribute_did_change :content
-    attribute_did_change :empty?
-  end
-
-  def add_array_observer(object)
-    (@array_observers ||= []) << object
-  end
-
-  def <<(obj)
-    size = length
-    old_push obj
-
-    array_content_did_change size, 0, 1
-    self
-  end
-
-  def delete(obj)
-    if idx = index(obj)
-      delete_at idx
-
-      array_content_did_change idx, 1, 0
+    def add_array_observer(obj)
+      (@array_observers ||= []) << obj
     end
 
-    obj
-  end
+    def <<(obj)
+      length = @content.length
+      @content << obj
 
-  def insert(idx, object)
-    if idx > length
-      raise ArgumentError, 'out of range'
+      array_content_did_change length, 0, 1
+      self
     end
 
-    old_insert idx, object
+    def delete(obj)
+      if idx = @content.index(obj)
+        @content.delete_at idx
+        array_content_did_change idx, 1, 0
+      end
 
-    array_content_did_change idx, 0, 1
-    self
-  end
+      obj
+    end
 
-  def clear
-    length = self.length
-    old_clear
+    def insert(idx, obj)
+      if idx > @content.length
+        raise ArgumentError, 'out of range'
+      end
 
-    array_content_did_change 0, length, 0
-    self
-  end
-end
+      @content.insert idx, obj
+      array_content_did_change idx, 0, 1
 
-class Array
-  def add_observer(attribute, &blk)
-    ObservableArray.infect(self)
-    add_observer(attribute, &blk)
-  end
+      self
+    end
 
-  def add_array_observer(object)
-    ObservableArray.infect(self)
-    add_array_observer(object)
+    def clear
+      length = @content.length
+      @content.clear
+
+      array_content_did_change 0, length, 0
+      self
+    end
   end
 end
