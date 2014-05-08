@@ -22,7 +22,7 @@ module Vienna
           record.trigger_events :ajax_error, response
         end
       end
-      
+
       block.call(record) if block
     end
 
@@ -39,7 +39,7 @@ module Vienna
           record.trigger_events :ajax_error, response
         end
       end
-      
+
       block.call(record) if block
     end
 
@@ -95,4 +95,3 @@ module Vienna
     end
   end
 end
-

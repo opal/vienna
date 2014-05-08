@@ -125,7 +125,9 @@ module Vienna
     end
 
     def load(attributes = nil)
-      @loaded, @new_record = true, false
+      self.loaded = true
+      self.new_record = false
+
       self.attributes = attributes if attributes
 
       trigger_events :load
