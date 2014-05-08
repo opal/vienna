@@ -7,6 +7,8 @@ module Vienna
     extend Eventable
 
     attr_accessor :id
+    attr_writer :loaded
+    attr_writer :new_record
 
     class << self
       attr_reader :identity_map
