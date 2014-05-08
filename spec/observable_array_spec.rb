@@ -1,14 +1,19 @@
 require 'spec_helper'
 require 'vienna/observable_array'
 
+class ObservableArraySpec
+  include Vienna::ObservableArray
+end
+
 describe Vienna::ObservableArray do
-  let(:empty) { described_class.new }
-  let(:foobar) { described_class.new([:foo, :bar]) }
+  let(:klass) { ObservableArraySpec }
+  let(:empty) { klass.new }
+  let(:foobar) { klass.new([:foo, :bar]) }
 
   describe ".new" do
     it "takes an optional content" do
-      described_class.new.content.should == []
-      described_class.new([1, 2, 3]).content.should == [1, 2, 3]
+      klass.new.content.should == []
+      klass.new([1, 2, 3]).content.should == [1, 2, 3]
     end
   end
 
@@ -91,24 +96,24 @@ describe Vienna::ObservableArray do
   describe "#array_content_did_change" do
     it "triggers a :size attribute change" do
       called = false
-      subject.add_observer(:size) { called = true }
-      subject.clear
+      empty.add_observer(:size) { called = true }
+      empty.clear
 
       called.should == true
     end
 
     it "triggers a :content attribute change" do
       called = false
-      subject.add_observer(:content) { called = true }
-      subject.clear
+      empty.add_observer(:content) { called = true }
+      empty.clear
 
       called.should == true
     end
 
     it "triggers a :empty? attribute change" do
       called = false
-      subject.add_observer(:empty?) { called = true }
-      subject.clear
+      empty.add_observer(:empty?) { called = true }
+      empty.clear
 
       called.should == true
     end

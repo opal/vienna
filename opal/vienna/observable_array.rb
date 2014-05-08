@@ -1,7 +1,7 @@
 require 'vienna/observable'
 
 module Vienna
-  class ObservableArray
+  module ObservableArray
     include Vienna::Observable
 
     attr_reader :content
@@ -67,5 +67,7 @@ module Vienna
       array_content_did_change 0, length, 0
       self
     end
+
+    alias push <<
   end
 end

@@ -248,7 +248,11 @@ obj.age = 42
 ## Observable Arrays
 
 ```ruby
-array = Vienna::ObservableArray.new
+class MyArray
+  include Vienna::ObservableArray
+end
+
+array = MyArray.new
 
 array.add_observer(:content) { |content| puts "content is now #{content}" }
 array.add_observer(:size) { |size| puts "size is now #{size}" }
