@@ -2,7 +2,9 @@ require 'spec_helper'
 require 'vienna/adapters/local'
 
 class LocalModel < Vienna::Model
-  adapter Vienna::LocalAdapter
+end
+
+class LocalModelAdapter < Vienna::LocalAdapter
 end
 
 describe Vienna::LocalAdapter do

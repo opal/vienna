@@ -80,5 +80,5 @@ describe Vienna::Model do
       klass = Class.new(Vienna::Model)
       lambda { klass.adapter }.should raise_error(Exception)
     end
-  end
+  end if false
 end

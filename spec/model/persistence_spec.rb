@@ -12,13 +12,6 @@ describe Vienna::Model do
       called.should eq(true)
     end
 
-    it "triggers a :destroy event on the class" do
-      called = false
-      model_class.on(:destroy) { called = true }
-      model.did_destroy
-      called.should eq(true)
-    end
-
     it "removes the record from the class identity_map" do
       loaded_model.did_destroy
       model_class.identity_map[loaded_model.id].should eq(nil)
@@ -62,13 +55,6 @@ describe Vienna::Model do
     it "triggers a :create event on the record" do
       called = false
       model.on(:create) { called = true }
-      model.did_create
-      called.should eq(true)
-    end
-
-    it "triggers a :create event on the class" do
-      called = false
-      model.class.on(:create) { called = true }
       model.did_create
       called.should eq(true)
     end

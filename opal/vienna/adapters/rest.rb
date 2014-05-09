@@ -19,11 +19,15 @@ module Vienna
     end
 
     def did_find(record, id, json)
-      if root_key = record.class.root_key
-        json = json[root_key]
-      end
+      record.load extract_record_data(record, json)
+    end
 
-      record.load json
+    def extract_record_data(record, data)
+      if root = record.class.root_key
+        data[root]
+      else
+        data
+      end
     end
 
     def create_record(record)

@@ -41,9 +41,22 @@ module Vienna
       primary_key ? @primary_key = primary_key : @primary_key ||= :id
     end
 
-    def self.adapter(klass = nil)
-      return @adapter = klass.new if klass
-      @adapter || raise("No adapter for #{self}")
+    def self.root_key(root_key = nil)
+      root_key ? @root_key = root_key : @root_key
+    end
+
+    def self.adapter
+      @adapter ||= begin
+         klass =  if Object.const_defined? "#{name}Adapter"
+                    Object.const_get "#{name}Adapter"
+                  elsif Object.const_defined? "ApplicationAdapter"
+                    ::ApplicationAdapter
+                  else
+                    raise "No adapter defined for #{self}"
+                  end
+
+         klass.new
+       end
     end
 
     def self.find(id = nil)
@@ -117,17 +130,19 @@ module Vienna
       json = {}
       json[:id] = self.id if self.id
 
-      self.class.columns.each { |name| json[name] = __send__(name) }
+      self.class.columns.each do |column|
+        json[column] = __send__ column
+      end
+
+      if root_key = self.class.root_key
+        json = { root_key => json }
+      end
+
       json
     end
 
     def to_json
       as_json.to_json
-    end
-
-    def trigger_events(name)
-      self.class.trigger(name, self)
-      self.trigger(name)
     end
 
     def inspect
@@ -142,7 +157,7 @@ module Vienna
 
       self.attributes = attributes if attributes
 
-      trigger_events :load
+      trigger :load
     end
 
     def new_record?
@@ -184,7 +199,7 @@ module Vienna
       self.class.identity_map.delete self.id
       self.class.all.delete self
 
-      trigger_events(:destroy)
+      trigger :destroy
     end
 
     # A private method. This is called by the adapter once this record has been
@@ -194,14 +209,14 @@ module Vienna
       self.class.identity_map[self.id] = self
       self.class.all.push self
 
-      trigger_events(:create)
+      trigger :create
     end
 
     # A private method. This is called by the adapter when this record has been
     # updated in the adapter. It should not be called directly. It may be
     # overriden, aslong as `super()` is called.
     def did_update
-      trigger_events(:update)
+      trigger :update
     end
 
     def [](attribute)
