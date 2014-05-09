@@ -264,6 +264,57 @@ array << :bar
 # => size is now 1
 # => content is now [:bar]
 # => size is now 2
+```
+
+## Reactor
+
+Works on top of `Observable`. Lets assume a class:
+```ruby
+class User
+  attr_accessor :name, :age
+end
+
+user = User.new
+```
+
+We can map values:
+
+```ruby
+Vienna::Reactor.new(user, :name)
+                .map { |name| name.upcase }
+                .then { |name| puts "Name is #{name}" }
+
+user.name = 'Adam'
+# => "Name is ADAM"
+user.name = 'Beynon'
+# => "Name is BEYNON"
+```
+
+We can select/reject values:
+
+```ruby
+Vienna::Reactor.new(user, :age)
+                .select { |age| age >= 10 }
+                .then { |age| puts "Age is #{age}" }
+
+user.age = 20
+user.age = 7
+user.age = 15
+
+# => "Age is 20"
+# => "Age is 15"
+```
+
+And we can check the current value:
+
+```ruby
+reactor = Vienna::Reactor.new(user, :age).map { |age| age + 10 }
+
+user.age = 20
+puts reactor.now
+
+# => 30
+```
 
 #### Todo
 
