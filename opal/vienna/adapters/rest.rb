@@ -9,21 +9,36 @@ end
 module Vienna
   # Adapter for a REST backend
   class RESTAdapter < Adapter
-    def create_record(record, &block)
-      url = record_url(record)
-      options = { dataType: "json", payload: record.as_json }
-      HTTP.post(url, options) do |response|
-        if response.ok?
-          record.load Hash.new(response.body)
-          record.class.trigger :ajax_success, response
-          record.did_create
-          record.class.trigger :change, record.class.all
-        else
-          record.trigger_events :ajax_error, response
-        end
+    def find(record, id)
+      url = record_url record.class, id
+
+      http_request(url).then do |response|
+        did_find record, id, response.json
+        record
+      end
+    end
+
+    def did_find(record, id, json)
+      if root_key = record.class.root_key
+        json = json[root_key]
       end
 
-      block.call(record) if block
+      record.load json
+    end
+
+    def create_record(record)
+      url = record_url record
+
+      options = { dataType: "json", payload: record.as_json }
+
+      http_request(url, options).then do |response|
+        did_create_record record, response.json
+      end
+    end
+
+    def did_create_record(record, json)
+      record.load json
+      record.did_create
     end
 
     def update_record(record, &block)
@@ -58,11 +73,6 @@ module Vienna
       end
 
       block.call(record) if block
-    end
-
-    def find(record, id)
-      # TODO remote fetch
-      nil
     end
 
     def fetch(model, options = {}, &block)

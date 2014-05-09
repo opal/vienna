@@ -46,13 +46,25 @@ module Vienna
       @adapter || raise("No adapter for #{self}")
     end
 
-    def self.find(id, &block)
+    def self.find(id = nil)
+      if id.nil?
+        find_all
+      else
+        find_by_id id
+      end
+    end
+
+    def self.find_by_id(id)
       if record = identity_map[id]
         return record
       end
 
       record = self.new
-      self.adapter.find(record, id, &block)
+      self.adapter.find(record, id)
+    end
+
+    def self.find_all
+      raise "Need to find all"
     end
 
     def self.load(attributes)
@@ -96,7 +108,7 @@ module Vienna
       end
       model = new attrs
       if attrs.has_key?(self.primary_key) and ! attrs[self.primary_key].empty?
-        model.instance_variable_set('@new_record', false) 
+        model.new_record = false
       end
       model
     end
@@ -158,8 +170,8 @@ module Vienna
       self.class.adapter.update_record self
     end
 
-    def destroy(&block)
-      self.class.adapter.delete_record(self, &block)
+    def destroy
+      self.class.adapter.delete_record self
     end
 
     # Should be considered a private method. This is called by an adapter when
