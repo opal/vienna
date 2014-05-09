@@ -1,5 +1,9 @@
 module Vienna
   class Reactor
+    def self.merge(*reactors)
+      Merged.new(reactors)
+    end
+
     def initialize(object, attr)
       @object = object
       @attribute = attr
@@ -65,6 +69,16 @@ module Vienna
 
       def now
         @block.call @source.now
+      end
+    end
+
+    class Merged < Reactor
+      def initialize(reactors)
+        @reactors = reactors
+
+        @reactors.each do |reactor|
+          reactor.then { resolve @reactors.map(&:now) }
+        end
       end
     end
   end
