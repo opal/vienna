@@ -33,7 +33,12 @@ module Vienna
       return unless @attr_observers
 
       if handlers = @attr_observers[attribute]
-        new_val = __send__(attribute) if respond_to?(attribute)
+        new_val = if respond_to? attribute
+                    __send__ attribute
+                  elsif respond_to? "#{attribute}?"
+                    __send__ "#{attribute}?"
+                  end
+
         handlers.each { |h| h.call new_val }
       end
     end
