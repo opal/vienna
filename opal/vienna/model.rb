@@ -4,7 +4,6 @@ require 'vienna/record_array'
 module Vienna
   class Model
     include Eventable
-    extend Eventable
 
     attr_accessor :id
     attr_writer :loaded
