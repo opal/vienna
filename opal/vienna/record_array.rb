@@ -1,36 +1,31 @@
-module Vienna
-  # A RecordArray acts as a wrapper and delegator around an array of
-  # record instances.
-  #
-  # NOTE: RecordArray implements many methods required so that it can
-  # be run with method_missing turned off.
-  class RecordArray < BasicObject
-    attr_accessor :records
+require 'vienna/observable_array'
 
-    def initialize
-      @records = []
-    end
+module Vienna
+  class RecordArray
+    include ObservableArray
+
+    attr_writer :content
 
     def ==(arr)
-      @records == arr
+      if arr.respond_to? :content
+        @content == arr.content
+      else
+        @content == arr
+      end
     end
 
     def method_missing(sym, *args, &block)
-      @records.__send__(sym, *args, &block)
+      @content.__send__(sym, *args, &block)
     end
 
     def each(&block)
-      @records.each(&block)
+      @content.each(&block)
     end
 
     def size
-      @records.size
+      @content.size
     end
 
     alias length size
-
-    def push(obj)
-      @records.push obj
-    end
   end
 end
