@@ -82,14 +82,11 @@ module Vienna
             else if (name === 'bind-if') {
               binding_class = Opal.Vienna.ShowIfBinding;
             }
-            else if (name === 'action') {
-              binding_class = Opal.Vienna.ActionBinding;
-            }
-            else if (name === 'hideif') {
+            else if (name === 'bind-unless') {
               binding_class = Opal.Vienna.HideIfBinding;
             }
-            else if (name === 'showif') {
-              binding_class = Opal.Vienna.ShowIfBinding;
+            else if (name === 'action') {
+              binding_class = Opal.Vienna.ActionBinding;
             }
             else if (name === 'view') {
               binding_class = Opal.Vienna.ViewBinding;
