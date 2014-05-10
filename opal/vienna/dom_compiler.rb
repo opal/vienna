@@ -79,6 +79,9 @@ module Vienna
                 binding_class = Opal.Vienna.ValueBinding;
               }
             }
+            else if (name === 'bind-if') {
+              binding_class = Opal.Vienna.ShowIfBinding;
+            }
             else if (name === 'action') {
               binding_class = Opal.Vienna.ActionBinding;
             }

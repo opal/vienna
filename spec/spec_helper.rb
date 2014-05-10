@@ -4,6 +4,7 @@ require 'opal-jquery'
 require 'vienna'
 require 'vienna/template_view'
 require 'vienna/reactor'
+require 'vienna/dom_compiler'
 
 module ViennaSpecHelper
   def html(html_string = "")
@@ -46,3 +47,24 @@ class ReactorSpec
 
   attr_accessor :name
 end
+
+class BoundView < Vienna::View
+  include Vienna::Observable
+
+  attr_accessor :name, :loaded
+
+  def run_bindings(html)
+    self.class.element html
+    self.element
+    Vienna::DOMCompiler.new self, template_context
+  end
+
+  def template_context
+    self
+  end
+
+  def add_view_observer(object, attribute, observer)
+    object.add_observer(attribute, &observer)
+  end
+end
+
