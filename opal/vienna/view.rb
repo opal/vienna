@@ -35,7 +35,17 @@ module Vienna
       end
     end
 
+    def render_element
+      before_render
+      render
+      after_render
+    end
+
     def render
+      if template = Template[self.class.template]
+        @output_buffer = OutputBuffer.new
+        element.html = instance_exec @output_buffer, template.body
+      end
     end
 
     def class_name
