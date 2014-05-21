@@ -103,19 +103,6 @@ module Vienna
       adapter.fetch(self, options, &block)
     end
 
-    def self.from_form(form)
-      attrs = {}
-      `#{form}.serializeArray()`.each do |field|
-        key, val = `field.name`, `field.value`
-        attrs[key] = val
-      end
-      model = new attrs
-      if attrs.has_key?(self.primary_key) and ! attrs[self.primary_key].empty?
-        model.new_record = false
-      end
-      model
-    end
-
     def as_json
       json = {}
       json[:id] = self.id if self.id
@@ -179,11 +166,6 @@ module Vienna
       self.class.adapter.delete_record self
     end
 
-    # Should be considered a private method. This is called by an adapter when
-    # this record gets deleted/destroyed. This method is then responsible from
-    # remoing this record instance from the class' identity_map, and triggering
-    # a `:destroy` event. If you override this method, you *must* call super,
-    # otherwise undefined bad things will happen.
     def did_destroy
       @destroyed = true
       self.class.identity_map.delete self.id
@@ -192,8 +174,6 @@ module Vienna
       trigger :destroy
     end
 
-    # A private method. This is called by the adapter once this record has been
-    # created in the backend.
     def did_create
       self.new_record = false
       self.class.identity_map[self.id] = self
@@ -202,9 +182,6 @@ module Vienna
       trigger :create
     end
 
-    # A private method. This is called by the adapter when this record has been
-    # updated in the adapter. It should not be called directly. It may be
-    # overriden, aslong as `super()` is called.
     def did_update
       trigger :update
     end
