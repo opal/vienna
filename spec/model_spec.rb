@@ -3,25 +3,23 @@ require 'spec_helper'
 describe Vienna::Model do
   describe ".new" do
     it "should set @new_record to true" do
-      SimpleModel.new.new_record?.should eq(true)
+      expect(SimpleModel.new).to be_new_record
     end
   end
 
   describe ".primary_key" do
     it "should have a default primary key" do
-      SimpleModel.primary_key.should eq(:id)
+      expect(SimpleModel.primary_key).to eq(:id)
     end
 
     it "should be changeable" do
-      AdvancedModel.primary_key.should eq(:title)
+      expect(AdvancedModel.primary_key).to eq(:title)
     end
   end
 
   describe ".load" do
     it "raises an ArgumentError if no id present" do
-      lambda {
-        SimpleModel.load({})
-      }.should raise_error(ArgumentError)
+      expect { SimpleModel.load({}) }.to raise_error(ArgumentError)
     end
 
     it "should be able to load models with own primary_key" do
@@ -30,7 +28,7 @@ describe Vienna::Model do
 
     it "should set @new_record to false on the model" do
       model = SimpleModel.load(id: 42)
-      model.new_record?.should eq(false)
+      expect(model).to_not be_new_record
     end
 
     it "should cache model" do
