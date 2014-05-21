@@ -44,18 +44,9 @@ module Vienna
       root_key ? @root_key = root_key : @root_key
     end
 
-    def self.adapter
-      @adapter ||= begin
-         klass =  if Object.const_defined? "#{name}Adapter"
-                    Object.const_get "#{name}Adapter"
-                  elsif Object.const_defined? "ApplicationAdapter"
-                    ::ApplicationAdapter
-                  else
-                    raise "No adapter defined for #{self}"
-                  end
-
-         klass.new
-       end
+    def self.adapter(klass = nil)
+      return @adapter = klass.new if klass
+      @adapter or raise "No adapter for #{self}"
     end
 
     def self.find(id = nil)
