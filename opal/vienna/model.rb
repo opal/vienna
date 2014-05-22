@@ -1,9 +1,11 @@
 require 'vienna/eventable'
 require 'vienna/record_array'
+require 'vienna/model/associations'
 
 module Vienna
   class Model
     include Eventable
+    include Associations
 
     attr_accessor :id
     attr_writer :loaded
