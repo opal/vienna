@@ -31,6 +31,7 @@ RSpec.configure do |config|
 end
 
 class SimpleModel < Vienna::Model
+  adapter Vienna::Adapter
   attribute :name
 end
 
@@ -39,6 +40,7 @@ class User < Vienna::Model
 end
 
 class AdvancedModel < Vienna::Model
+  adapter Vienna::Adapter
   primary_key :title
 end
 

@@ -32,9 +32,10 @@ describe Vienna::Model do
     end
 
     it "should cache model" do
-      SimpleModel.identity_map[8].should be_nil
+      expect(SimpleModel.cached 8).to be_nil
       model = SimpleModel.load(id: 8)
-      SimpleModel.identity_map[8].should eq(model)
+
+      expect(SimpleModel.cached 8).to eq(model)
     end
 
     it "saves the model in .all record array" do

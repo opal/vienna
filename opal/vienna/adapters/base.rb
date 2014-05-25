@@ -10,6 +10,14 @@ module Vienna
   # and LocalAdapter. A fixtures adapter is also provided for testing
   # purposes.
   class Adapter
+    def cache
+      @cache ||= {}
+    end
+
+    def cached(id)
+      cache[id]
+    end
+
     def find(record, id, &block)
       implement "find"
     end

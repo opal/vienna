@@ -36,13 +36,8 @@ module Vienna
       options = { dataType: "json", payload: record.as_json }
 
       http_request(url, options).then do |response|
-        did_create_record record, response.json
+        response
       end
-    end
-
-    def did_create_record(record, json)
-      record.load json
-      record.did_create
     end
 
     def update_record(record, &block)
