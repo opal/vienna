@@ -10,7 +10,6 @@ module Vienna
     end
 
     def destroy
-      puts "destroying #@context -> #@attr for #@observer"
       @context.remove_observer @attr, @observer
     end
   end
