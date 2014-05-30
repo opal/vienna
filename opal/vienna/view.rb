@@ -1,3 +1,7 @@
+require 'template'
+require 'vienna/output_buffer'
+require 'active_support/core_ext/string'
+
 module Vienna
   class View
     def self.element(selector = nil)
@@ -11,6 +15,16 @@ module Vienna
     def self.on(name, selector = nil, method = nil, &handler)
       handler = proc { |evt| __send__(method, evt) } if method
       events << [name, selector, handler]
+    end
+
+    def self.template(name = nil)
+      if name
+        @template = name
+      elsif @template
+        @template
+      elsif name = self.name
+        @template = name.sub(/View$/, '').demodulize.underscore
+      end
     end
 
     attr_accessor :parent
@@ -47,6 +61,10 @@ module Vienna
         element.html = instance_exec @output_buffer, template.body
       end
     end
+
+    def before_render; end
+
+    def after_render; end
 
     def class_name
       ""

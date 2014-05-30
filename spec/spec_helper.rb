@@ -2,7 +2,6 @@ require 'vendor/jquery'
 require 'opal-rspec'
 require 'opal-jquery'
 require 'vienna'
-require 'vienna/template_view'
 require 'vienna/reactor'
 require 'vienna/dom_compiler'
 

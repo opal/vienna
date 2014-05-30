@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'vienna/template_view'
 
 Template.new('template_view_spec') do |buf|
   buf.append "foo"
@@ -7,28 +6,22 @@ Template.new('template_view_spec') do |buf|
   buf.join
 end
 
-class TemplateViewSpec < Vienna::TemplateView
+class ViewSpec < Vienna::View
   template :template_view_spec
 end
 
-class SimpleTemplate < Vienna::TemplateView
+class SimpleTemplate < Vienna::View
 end
 
-class SimplerTemplateView < Vienna::TemplateView
-  class SubClassView < Vienna::TemplateView
+class SimplerTemplateView < Vienna::View
+  class SubClassView < Vienna::View
   end
 end
 
-describe Vienna::TemplateView do
+describe Vienna::View do
   before do
-    @view = TemplateViewSpec.new
+    @view = ViewSpec.new
     @tmpl = Template['template_view_spec']
-  end
-
-  describe "#_render_template" do
-    it "returns the rendered content for the template" do
-      @view._render_template(@tmpl).should == "foobar"
-    end
   end
 
   describe ".template" do
