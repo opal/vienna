@@ -13,8 +13,15 @@ module Vienna
     end
 
     def self.on(name, selector = nil, method = nil, &handler)
-      handler = proc { |evt| __send__(method, evt) } if method
-      events << [name, selector, handler]
+      if handler
+        method = "#{name}_#{selector}"
+        define_method(method, &handler)
+        events << [name, selector, method]
+      elsif method
+        events << [name, selector, method]
+      else
+        events << [name, nil, selector]
+      end
     end
 
     def self.template(name = nil)
@@ -83,10 +90,12 @@ module Vienna
 
       el = element
       @dom_events = self.class.events.map do |event|
-        name, selector, handler = event
-        wrapper = proc { |e| instance_exec(e, &handler) }
+        name, selector, method = event
 
-        el.on(name, selector, &wrapper)
+        wrapper = el.on(name, selector) do |evt|
+          __send__ method, evt
+        end
+
         [name, selector, wrapper]
       end
     end
@@ -95,7 +104,7 @@ module Vienna
       el = element
       @dom_events.each do |event|
         name, selector, wrapper = event
-        el.off(name, selector, &wrapper)
+        el.off(name, selector, wrapper)
       end
     end
 
