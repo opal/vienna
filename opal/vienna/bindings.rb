@@ -92,6 +92,13 @@ module Vienna
     end
   end
 
+  class EachBinding < BaseBinding
+    def setup_binding
+      @element = Element.find @node
+      @element.empty
+    end
+  end
+
   class ViewBinding < BaseBinding
     def setup_binding
       view = @context.__send__ @attr

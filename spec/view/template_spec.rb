@@ -19,11 +19,6 @@ class SimplerTemplateView < Vienna::View
 end
 
 describe Vienna::View do
-  before do
-    @view = ViewSpec.new
-    @tmpl = Template['template_view_spec']
-  end
-
   describe ".template" do
     it "returns the class name underscored when no name given" do
       SimpleTemplate.template.should == "simple_template"

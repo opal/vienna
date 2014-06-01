@@ -85,6 +85,9 @@ module Vienna
             else if (name === 'bind-unless') {
               binding_class = Opal.Vienna.HideIfBinding;
             }
+            else if (name === 'bind-each') {
+              binding_class = Opal.Vienna.EachBinding;
+            }
             else if (name === 'action') {
               binding_class = Opal.Vienna.ActionBinding;
             }
