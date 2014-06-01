@@ -16,12 +16,12 @@ module Vienna
       if handler
         method = "#{name}_#{selector}"
         define_method(method, &handler)
-        events << [name, selector, method]
-      elsif method
-        events << [name, selector, method]
-      else
-        events << [name, nil, selector]
+      elsif method.nil?
+        method = selector
+        selector = nil
       end
+
+      events << [name, selector, method]
     end
 
     def self.template(name = nil)
