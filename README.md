@@ -264,6 +264,7 @@ array << :bar
 # => size is now 1
 # => content is now [:bar]
 # => size is now 2
+```
 
 #### Todo
 
