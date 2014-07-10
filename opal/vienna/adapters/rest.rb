@@ -3,6 +3,9 @@ module Vienna
     def self.url(url = nil)
       url ? @url = url : @url
     end
+    def self.json_root(json_root = nil)
+      json_root ? @json_root = json_root : @json_root
+    end
   end
 end
 
@@ -72,7 +75,14 @@ module Vienna
       options = { dataType: "json", data: params }.merge(options)
       HTTP.get(url, options) do |response|
         if response.ok?
-          response.json.each { |record| model.load record }
+          json = begin
+            if model.json_root.nil?
+              response.json
+            else
+              response.json[model.json_root]
+            end
+          end
+          json.each { |record| model.load record }
           model.trigger :ajax_success, response
           model.trigger :refresh, model.all
         else
