@@ -97,8 +97,6 @@ module Vienna
     end
 
     def save(&block)
-      puts "save from persistence"
-      puts "new record:#{@new_record}"
       @new_record ? create(&block) : update(&block)
     end
 
@@ -107,7 +105,6 @@ module Vienna
     end
 
     def update(attributes = nil, &block)
-      puts "update from persistence"
       self.attributes = attributes if attributes
       self.class.adapter.update_record(self, &block)
     end
@@ -122,12 +119,15 @@ module Vienna
     # a `:destroy` event. If you override this method, you *must* call super,
     # otherwise undefined bad things will happen.
     def did_destroy
+      puts "DID DESTROY!"
       self.class.identity_map.delete self.id
       
       #rebuild all
       new_all = RecordArray.new
       self.class.all.each{|record| new_all << record unless record.id == self.id}
       self.class.all = new_all
+      puts "new all is:"
+      p new_all
 
       trigger_events(:destroy)
     end

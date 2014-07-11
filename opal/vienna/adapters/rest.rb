@@ -56,9 +56,9 @@ module Vienna
         else
           record.class.trigger :ajax_error, response
         end
+        block.call(record) if block
       end
 
-      block.call(record) if block
     end
 
     def find(record, id)
