@@ -4,6 +4,14 @@ module Vienna
       selector ? @element = selector : @element
     end
 
+    def self.tag_name(tag = nil)
+      @@tag_name = tag
+    end
+
+    def self.class_name(css_class = nil)
+      @@class_name = css_class
+    end
+
     def self.events
       @events ||= []
     end
@@ -31,7 +39,8 @@ module Vienna
       if el = self.class.element
         scope.find el
       else
-        scope.new tag_name
+        e = scope.new tag_name
+        e.add_class class_name
       end
     end
 
@@ -39,11 +48,11 @@ module Vienna
     end
 
     def class_name
-      ""
+      @@class_name || ""
     end
 
     def tag_name
-      :div
+      @@tag_name || "div"
     end
 
     def find(selector)
