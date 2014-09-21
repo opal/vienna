@@ -5,11 +5,11 @@ module Vienna
     end
 
     def self.tag_name(tag = nil)
-      @@tag_name = tag
+      define_method(:tag_name) { tag } if tag
     end
 
     def self.class_name(css_class = nil)
-      @@class_name = css_class
+      define_method(:class_name) { css_class } if css_class
     end
 
     def self.events
@@ -48,11 +48,11 @@ module Vienna
     end
 
     def class_name
-      @@class_name || ""
+      ""
     end
 
     def tag_name
-      @@tag_name || "div"
+      "div"
     end
 
     def find(selector)
