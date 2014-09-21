@@ -6,6 +6,23 @@ Until a better README is out (shame on us) you can take a look at
 the [Opal implementation](https://github.com/opal/opal-todos) 
 of [TodoMVC](http://todomvc.com).
 
+## Installation
+
+Add vienna to your ```Gemfile``` with a reference to the Github source.
+
+Note: The vienna hosted on rubygems.org is a different project.
+
+```ruby
+gem 'vienna', github: 'opal/vienna'
+```
+    
+If you're compiling opal in a static application, make sure to require bundler first.
+
+```ruby
+require 'bundler'
+Bundler.require
+```
+
 ## Model
 
 Client side models.
