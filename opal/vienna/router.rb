@@ -28,6 +28,9 @@ module Vienna
     end
 
     def match(path)
+      puts "path:#{path}"
+      puts "MATCH!"
+      p @routes
       @routes.find { |r| r.match path }
     end
 
