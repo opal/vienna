@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name         = 'opal-vienna'
   s.version      = Opal::Vienna::VERSION
   s.author       = 'Adam Beynon'
-  s.email        = 'adam@adambeynon.com'
+  s.email        = 'adam.beynon@gmail.com'
   s.homepage     = 'http://opalrb.org'
   s.summary      = 'Client side MVC framework for Opal'
   s.description  = 'Client side MVC framework for Opal'
