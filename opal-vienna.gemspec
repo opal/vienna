@@ -3,13 +3,13 @@ $LOAD_PATH << File.expand_path('../lib', __FILE__)
 require 'vienna/version'
 
 Gem::Specification.new do |s|
-  s.name         = 'vienna'
+  s.name         = 'opal-vienna'
   s.version      = Vienna::VERSION
   s.author       = 'Adam Beynon'
   s.email        = 'adam@adambeynon.com'
   s.homepage     = 'http://opalrb.org'
-  s.summary      = '.'
-  s.description  = '..'
+  s.summary      = 'Client side MVC framework for Opal'
+  s.description  = 'Client side MVC framework for Opal'
   s.license      = 'MIT'
 
   s.files          = `git ls-files`.split("\n")
