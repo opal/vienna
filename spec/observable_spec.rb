@@ -27,11 +27,6 @@ describe Vienna::Observable do
       object.baz.should eq(110)
     end
 
-    it "returns the value from the original method" do
-      object.replace_writer_for(:bar)
-      (object.bar = 32).should eq("#bar")
-    end
-
     it "does not add a setter unless an existing attribute= method exists" do
       object.replace_writer_for(:bob)
       object.should_not respond_to(:bob=)
