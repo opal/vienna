@@ -73,6 +73,14 @@ describe Vienna::View do
         child.parent = parent
         child.create_element.size.should eq(0)
       end
+
+      it "creates a child element of parent element when no element defined" do
+        parent = Class.new(Vienna::View) { element "#parent-element" }.new
+        child  = Class.new(Vienna::View).new
+        
+        child.parent = parent
+        child.create_element.parent.id.should eq("parent-element")
+      end
     end
   end
 end

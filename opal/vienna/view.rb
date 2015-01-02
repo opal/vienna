@@ -34,12 +34,12 @@ module Vienna
     end
 
     def create_element
-      scope = (self.parent ? parent.element : Element)
-
       if el = self.class.element
+        scope = (self.parent ? parent.element : Element)
         scope.find el
       else
-        e = scope.new tag_name
+        e = Element.new tag_name
+        e.append_to parent.element if parent
         e.add_class class_name
       end
     end
