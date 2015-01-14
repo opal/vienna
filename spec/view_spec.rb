@@ -75,4 +75,11 @@ describe Vienna::View do
       end
     end
   end
+
+  describe "#render" do
+    it "returns the view" do
+      view = Class.new(Vienna::View).new
+      view.render.should eq(view)
+    end
+  end
 end

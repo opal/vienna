@@ -45,6 +45,7 @@ module Vienna
     end
 
     def render
+      self
     end
 
     def class_name
