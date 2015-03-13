@@ -25,7 +25,9 @@ module Vienna
 
     def delete_record(record, &block)
       record.did_destroy
-      sync_models record.class
+
+      sync_models(record.class)
+
       block.call(record) if block
     end
 
@@ -38,8 +40,7 @@ module Vienna
 
     # sync all records in given class to localstorage, now!
     def sync_models(klass)
-      name = klass.name
-      @storage.setItem name, klass.all.to_json
+      @storage.setItem klass.name, klass.all.to_json
     end
 
     # generate a new unique id.. just use timestamp for now
