@@ -16,9 +16,7 @@ PATH
   remote: .
   specs:
     opal-vienna (0.7.0)
-      opal (>= 0.5.0, < 1.0.0)
-      opal-activesupport
-      opal-jquery
+      opal (< 1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -30,8 +28,8 @@ GEM
       sourcemap (~> 0.1.0)
       sprockets (>= 2.2.3, < 4.0.0)
       tilt (~> 1.4)
-    opal-rspec (0.4.0.beta4)
-      opal (~> 0.7.0.beta1)
+    opal-rspec (0.4.1)
+      opal (~> 0.7.0)
     rack (1.6.0)
     rake (10.4.2)
     sourcemap (0.1.1)
@@ -46,9 +44,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  opal
   opal-activesupport!
   opal-jquery!
-  opal-rspec (= 0.4.0.beta4)
+  opal-rspec (>= 0.4.1)
   opal-vienna!
   rake

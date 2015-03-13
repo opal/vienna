@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.test_files     = `git ls-files -- spec/*`.split("\n")
   s.require_paths  = ['lib']
 
-  s.add_dependency 'opal', ['>= 0.5.0', '< 1.0.0']
-  s.add_dependency 'opal-jquery'
-  s.add_dependency 'opal-activesupport'
+  s.add_dependency 'opal', ['< 1.0.0']
+  # s.add_dependency 'opal-jquery'        # Using Gemfile for now in order to use the latest version
+  # s.add_dependency 'opal-activesupport' # Using Gemfile for now in order to use the latest version
 
-  s.add_development_dependency 'opal-rspec', '>= 0.2.1'
+  s.add_development_dependency 'opal-rspec', '>= 0.4.1'
   s.add_development_dependency 'rake'
 end
