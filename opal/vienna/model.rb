@@ -96,7 +96,7 @@ module Vienna
       end
       model = new attrs
       if attrs.has_key?(self.primary_key) and ! attrs[self.primary_key].empty?
-        model.instance_variable_set('@new_record', false) 
+        model.instance_variable_set('@new_record', false)
       end
       model
     end
