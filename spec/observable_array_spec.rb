@@ -93,6 +93,29 @@ describe Vienna::ObservableArray do
     end
   end
 
+  describe '#concat' do
+    it "concatenates an array to the content array" do
+      empty.concat [:one, :two]
+      empty.content.should == [:one, :two]
+
+      foobar.concat [:one, :two]
+      foobar.content.should == [:foo, :bar, :one, :two]
+    end
+
+    it "notifies observers to remove all existing objects" do
+      expect(empty).to receive(:array_content_did_change).once.with(0, 0, 3)
+      empty.concat [:one, :two, :three]
+
+      expect(foobar).to receive(:array_content_did_change).once.with(2, 0, 4)
+      foobar.concat [:one, :two, :three, :four]
+    end
+
+    it "raises an ArgumentError if arguement is not an array" do
+      expect { empty.concat 2 }.to raise_error(ArgumentError)
+      expect { foobar.concat({a: 'b'}) }.to raise_error(ArgumentError)
+    end
+  end
+
   describe "#array_content_did_change" do
     it "triggers a :size attribute change" do
       called = false

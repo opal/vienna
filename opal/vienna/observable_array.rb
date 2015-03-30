@@ -68,6 +68,15 @@ module Vienna
       self
     end
 
+    def concat(other_array)
+      raise ArgumentError, 'must be Array' unless other_array.is_a? Array
+      length = @content.length
+      @content.concat other_array
+
+      array_content_did_change length, 0, other_array.length
+      self
+    end
+
     alias push <<
   end
 end
