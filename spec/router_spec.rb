@@ -86,6 +86,11 @@ describe Vienna::Router do
       $global.location.hash.should eq("#foo")
     end
 
+    it "doesn't add poundsign to location.hash if present" do
+      subject.navigate "#foo"
+      $global.location.hash.should eq("#foo")
+    end
+
     it "triggers the route matchers" do
       called = false
       subject.route("/foo") { called = true }

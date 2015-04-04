@@ -33,10 +33,10 @@ module Vienna
       @routes.find { |r| r.match path }
     end
 
-    # Navigate to the given hash location. This adds the '#' 
+    # Navigate to the given hash location. This adds the '#' if not present
     # fragment to the start of the path
     def navigate(path)
-      @location.hash = "##{path}"
+      @location.hash = (path[0] == '#') ? path : "##{path}"
     end
 
     class Route
