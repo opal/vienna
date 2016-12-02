@@ -1,6 +1,13 @@
+### ⚠️ ALERT
+
+**The project is no longer actively developed and looking for new maintainers.**
+
+---
+
+
 # Vienna: Client side MVC framework for Opal
 
-[![Build Status](https://travis-ci.org/opal/vienna.png?branch=master)](https://travis-ci.org/opal/vienna)
+[![Build Status](https://travis-ci.org/opal/vienna.svg?branch=master)](https://travis-ci.org/opal/vienna)
 
 Until a better README is out (shame on us) you can take a look at
 the [Opal implementation](https://github.com/opal/opal-todos)
