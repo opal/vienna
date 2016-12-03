@@ -15,9 +15,9 @@ of [TodoMVC](http://todomvc.com).
 
 ## Installation
 
-Add vienna to your ```Gemfile``` with a reference to the Github source.
+Add vienna to your `Gemfile`:
 
-Note: The vienna hosted on rubygems.org is a different project.
+**Note:** The vienna hosted on rubygems.org is a different project.
 
 ```ruby
 gem 'opal-vienna'
@@ -60,7 +60,7 @@ class Book < Vienna::Model
   end
 end
 
-book = Book.new(:release_date => '2013-1-10')
+book = Book.new(release_date: '2013-1-10')
 book.release_date
 # => #<Date: 2013-1-10>
 ```
@@ -232,7 +232,6 @@ router.route("/users/:id") do |params|
   puts "need to show user: #{ params[:id] }"
 end
 
-
 # visit "example.com/#/users"
 # visit "example.com/#/users/3"
 # visit "example.com/#/users/5"
@@ -260,10 +259,10 @@ end
 
 obj = MyObject.new
 obj.add_observer(:name) { |new_val| puts "name changed to #{new_val}" }
-obj.add_observer(:age) { |new_age| puts "age changed to #{new_age}" }
+obj.add_observer(:age)  { |new_age| puts "age changed to #{new_age}" }
 
 obj.name = "bob"
-obj.age = 42
+obj.age  = 42
 
 # => "name changed to bob"
 # => "age changed to 52"
@@ -298,4 +297,3 @@ array << :bar
 ## License
 
 MIT
-
