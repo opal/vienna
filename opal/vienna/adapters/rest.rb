@@ -3,6 +3,9 @@ module Vienna
     def self.url(url = nil)
       url ? @url = url : @url
     end
+    def self.json_root(json_root = nil)
+      json_root ? @json_root = json_root : @json_root
+    end
   end
 end
 
@@ -14,7 +17,7 @@ module Vienna
       options = { dataType: "json", payload: record.as_json }
       HTTP.post(url, options) do |response|
         if response.ok?
-          record.load Hash.new(response.body)
+          record.load response.json
           record.class.trigger :ajax_success, response
           record.did_create
           record.class.trigger :change, record.class.all
@@ -31,7 +34,7 @@ module Vienna
       options = { dataType: "json", payload: record.as_json }
       HTTP.put(url, options) do |response|
         if response.ok?
-          record.class.load_json response.body
+          record.class.load response.json
           record.class.trigger :ajax_success, response
           record.did_update
           record.class.trigger :change, record.class.all
@@ -72,7 +75,14 @@ module Vienna
       options = { dataType: "json", data: params }.merge(options)
       HTTP.get(url, options) do |response|
         if response.ok?
-          response.body.map { |json| model.load_json json }
+          json = begin
+            if model.json_root.nil?
+              response.json
+            else
+              response.json[model.json_root]
+            end
+          end
+          json.each { |record| model.load record }
           model.trigger :ajax_success, response
           model.trigger :refresh, model.all
         else
@@ -88,7 +98,8 @@ module Vienna
       return record.url if record.respond_to? :url
 
       if klass_url = record.class.url
-        return "#{klass_url}/#{record.id}"
+        klass_url += "/#{record.id}" unless record.id.nil? or record.id.empty?
+        return klass_url
       end
 
       raise "Model does not define REST url: #{record}"
